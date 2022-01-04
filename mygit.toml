@@ -1,7 +1,7 @@
 # the port the server will listen on
 port = 8081
 # Directory to find git repos
-projectroot = "repos"
+repos_root = "repos"
 # Specify an emoji to be used as a favicon
 emoji_favicon = "💻"
 # the text shown in a browsers title bar

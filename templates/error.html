@@ -1,9 +1,7 @@
-{% extends "base.html" %}
-
-{% block content %}
-  <div class="page-title"><h1>Hmm, that did not work.</h1></div>
-  <div>
-    Something went wrong in getting "{{resource}}":<br>
-    {{status}} &mdash; {{message}}
-  </div>
+{% extends "base.html" %} {% block content %}
+<div class="page-title"><h1>Hmm, that did not work.</h1></div>
+<div>
+  Something went wrong in getting "{{resource}}":<br />
+  {{status}} &mdash; {{message}}
+</div>
 {% endblock %}

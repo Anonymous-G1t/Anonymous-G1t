@@ -22,7 +22,7 @@ pub struct Config {
     #[serde(default = "defaults::port")]
     port: u16,
     #[serde(default = "defaults::repo_directory")]
-    projectroot: String,
+    repos_root: String,
     #[serde(default = "String::new")]
     emoji_favicon: String,
     #[serde(default = "defaults::site_name")]
@@ -141,7 +141,7 @@ async fn index(req: Request<()>) -> tide::Result {
         }
     }
 
-    let repos = fs::read_dir(&CONFIG.projectroot)
+    let repos = fs::read_dir(&CONFIG.repos_root)
         .map(|entries| {
             entries
                 .filter_map(|entry| Some(entry.ok()?.path()))
@@ -173,12 +173,12 @@ fn repo_from_request(repo_name: &str) -> Result<Repository, tide::Error> {
         .decode_utf8_lossy()
         .into_owned();
 
-    let repo_path = Path::new(&CONFIG.projectroot)
+    let repo_path = Path::new(&CONFIG.repos_root)
         .join(repo_name)
         .canonicalize()?;
 
     // prevent path traversal
-    if !repo_path.starts_with(&CONFIG.projectroot) {
+    if !repo_path.starts_with(&CONFIG.repos_root) {
         return Err(tide::Error::from_str(
             403,
             "You do not have access to this resource.",
@@ -1081,6 +1081,6 @@ async fn main() -> Result<(), std::io::Error> {
         .get(repo_file_raw);
 
     app.at("*").all(static_resource);
-    app.listen(format!("[::]:{}", CONFIG.port)).await?;
+    app.listen(format!("0.0.0.0:{}", CONFIG.port)).await?;
     Ok(())
 }

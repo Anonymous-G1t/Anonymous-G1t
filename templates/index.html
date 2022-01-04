@@ -1,16 +1,18 @@
-{% extends "base.html" %}
-
-{% block content %}
-  <div class="page-title"><h1>{{crate::CONFIG.site_name}}</h1></div>
-  <div>
+{% extends "base.html" %} {% block content %}
+<div class="page-title"><h1>{{crate::CONFIG.site_name}}</h1></div>
+<div>
   <table>
-  {% for repo in repos %}
-  <tr>
-    <td class="repo-link"><a href="{{repo|repo_name|urlencode_strict}}">{{repo|repo_name}}</a></td>
-    <td class="repo-description">{{repo|description}}</td>
-    <td class="repo-last-updated">last updated {{repo|last_modified|format_datetime("%Y-%m-%d")}}</td>
-  </tr>
-  {% endfor %}
+    {% for repo in repos %}
+    <tr>
+      <td class="repo-link">
+        <a href="{{repo|repo_name|urlencode_strict}}">{{repo|repo_name}}</a>
+      </td>
+      <td class="repo-description">{{repo|description}}</td>
+      <td class="repo-last-updated">
+        last updated {{repo|last_modified|format_datetime("%Y-%m-%d")}}
+      </td>
+    </tr>
+    {% endfor %}
   </table>
-  </div>
+</div>
 {% endblock %}

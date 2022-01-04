@@ -1,36 +1,36 @@
-{% extends "base.html" %}
-
-{% block title %}{{repo|repo_name}} refs - {{crate::CONFIG.site_name}}{% endblock %}
-
-{% block head %}<link rel="alternate" type="application/rss+xml" title="{{repo|repo_name}} tags" href="refs.xml">{% endblock %}
-
-{% block content %}
-  {% include "repo-navbar.html" %}
-  <h3>Branches</h3>
-  <table>
+{% extends "base.html" %} {% block title %}{{repo|repo_name}} refs -
+{{crate::CONFIG.site_name}}{% endblock %} {% block head %}<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="{{repo|repo_name}} tags"
+  href="refs.xml"
+/>{% endblock %} {% block content %} {% include "repo-navbar.html" %}
+<h3>Branches</h3>
+<table>
   {% for branch in branches %}
   <tr>
     <td class="git-reference">
-    <a href="/{{repo|repo_name|urlencode_strict}}/log/{{branch.shorthand().unwrap()}}">{{ branch.shorthand().unwrap() }}</a>
+      <a
+        href="/{{repo|repo_name|urlencode_strict}}/log/{{branch.shorthand().unwrap()}}"
+        >{{ branch.shorthand().unwrap() }}</a
+      >
     </td>
   </tr>
   {% endfor %}
-  </table>
-  <h3>Tags</h3>
-  <a href="log.xml" class="feed"><img src="/Feed-icon.svg" alt="RSS feed icon"/></a>
-  <table>
+</table>
+<h3>Tags</h3>
+<a href="log.xml" class="feed"
+  ><img src="/Feed-icon.svg" alt="RSS feed icon"
+/></a>
+<table>
   {% for (link, tag, signature) in tags %}
-    <tr>
-      <td class="git-reference">
-        <a href="/{{repo|repo_name|urlencode_strict}}/{{link}}">{{tag}}</a>
-      </td>
-      <td>
-        {{signature|signature_email_link|safe}}
-      </td>
-      <td>
-        {{signature.when()|format_datetime("%Y-%m-%d")}}
-      </td>
-    </tr>
+  <tr>
+    <td class="git-reference">
+      <a href="/{{repo|repo_name|urlencode_strict}}/{{link}}">{{tag}}</a>
+    </td>
+    <td>{{signature|signature_email_link|safe}}</td>
+    <td>{{signature.when()|format_datetime("%Y-%m-%d")}}</td>
+  </tr>
   {% endfor %}
-  </table>
+</table>
 {% endblock %}
