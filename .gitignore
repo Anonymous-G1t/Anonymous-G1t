@@ -1,3 +1,4 @@
-target/
-repos/
-mail/
+/target/
+/repos/
+/mail/
+/debug.log

@@ -1102,5 +1102,6 @@ async fn main() -> Result<(), std::io::Error> {
   app.at("*").all(static_resource);
 
   app.listen(format!("0.0.0.0:{}", CONFIG.port)).await?;
+
   Ok(())
 }

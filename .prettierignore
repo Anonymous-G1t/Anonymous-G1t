@@ -1,2 +1,3 @@
-prism.*
-target/
+/target/
+/prism.*
+/debug.log
