@@ -13,6 +13,8 @@ use syntect::{
 
 use tide::{http, Request, Response};
 
+use simplelog::{debug, error, info, trace, warn};
+
 mod errorpage;
 mod filters;
 
