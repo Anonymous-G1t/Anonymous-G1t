@@ -1,3 +1,2 @@
 /target/
-/prism.*
-/debug.log
+/templates/static/prism.*

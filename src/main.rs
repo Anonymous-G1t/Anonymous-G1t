@@ -13,8 +13,6 @@ use syntect::{
 
 use tide::{http, Request, Response};
 
-use simplelog::{debug, error, info, trace, warn};
-
 mod errorpage;
 mod filters;
 
@@ -1055,7 +1053,7 @@ async fn repo_refs_feed(req: Request<()>) -> tide::Result {
 async fn main() -> Result<(), std::io::Error> {
   fs::create_dir_all(CONFIG.repos_root.clone()).ok();
 
-  tide::log::start();
+  femme::start(femme::Logger::Pretty);
 
   let mut app = tide::new();
 
