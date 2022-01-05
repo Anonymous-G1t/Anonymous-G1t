@@ -7,6 +7,10 @@ license = "AGPL-3.0-or-later"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[release]
+lto = true
+panic = "abort"
+
 [dependencies]
 # not using features config and num-traits
 askama = { version = "0.10", default-features = false, features = [

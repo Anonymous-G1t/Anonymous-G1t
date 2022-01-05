@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% block title %}{{repo|repo_name}} {{path.display()}}
-- {{crate::CONFIG.site_name}}{% endblock %} {% block content %} {% include
-"repo-navbar.html" %}
+{% extends "base.html" %} {% block title %} {{repo|repo_name}}
+{{path.display()}} - {{crate::CONFIG.site_name}}{% endblock %} {% block content
+%} {% include "repo-navbar.html" %}
 <h3>
   {{path.display()}}@<a
     href="/{{repo|repo_name|urlencode_strict}}/tree/{{spec}}"

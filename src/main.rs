@@ -1056,9 +1056,12 @@ async fn main() -> Result<(), std::io::Error> {
   tide::log::start();
 
   let mut app = tide::new();
+
   app.with(errorpage::ErrorToErrorpage);
+
   app.at("/").get(index);
 
+  // repositories
   app.at("/repos/:repo_name").get(repo_home);
   app.at("/repos/:repo_name/").get(repo_home);
 
