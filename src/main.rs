@@ -66,11 +66,6 @@ FLAGS:
 OPTIONS:
   -c, --config <FILE>   Use a specific configuration file.
                         default is ./mygit.toml
-
-Mandatory or optional arguments to long options are also mandatory or optional
-for any corresponding short options.
-
-Report bugs at https://todo.sr.ht/~aw/mygit
 ";
 
 static CONFIG: Lazy<Config> = Lazy::new(args);
@@ -97,7 +92,7 @@ fn args() -> Config {
 
   let toml_text = fs::read_to_string(&config_filename).unwrap_or_else(|_| {
     tide::log::warn!(
-      "configuration file {:?} not found, using defaults",
+      "Configuration file {:?} not found, using defaults",
       config_filename
     );
     String::new()
@@ -157,7 +152,7 @@ async fn index(req: Request<()>) -> tide::Result {
         })
         .collect::<Vec<_>>()
     })
-    .map_err(|e| tide::log::warn!("can not read repositories: {}", e))
+    .map_err(|e| tide::log::warn!("Can't read repositories: {}", e))
     .unwrap_or_default();
   let index_template = IndexTemplate { repos };
 
@@ -252,7 +247,7 @@ async fn repo_home(req: Request<()>) -> tide::Result {
 
   // get the first few commits for a preview
   let commits = if repo.is_shallow() {
-    tide::log::warn!("repository {:?} is only a shallow clone", repo.path());
+    tide::log::warn!("Repository {:?} is only a shallow clone", repo.path());
     vec![repo.head()?.peel_to_commit().unwrap()]
   } else {
     let mut revwalk = repo.revwalk()?;
@@ -297,7 +292,7 @@ async fn repo_log(req: Request<()>) -> tide::Result {
 
   let next_page_spec;
   let mut commits = if repo.is_shallow() {
-    tide::log::warn!("repository {:?} is only a shallow clone", repo.path());
+    tide::log::warn!("Repository {:?} is only a shallow clone", repo.path());
     next_page_spec = "".into();
     vec![repo.head()?.peel_to_commit().unwrap()]
   } else {
@@ -934,7 +929,7 @@ async fn repo_log_feed(req: Request<()>) -> tide::Result {
   }
 
   let commits = if repo.is_shallow() {
-    tide::log::warn!("repository {:?} is only a shallow clone", repo.path());
+    tide::log::warn!("Repository {:?} is only a shallow clone", repo.path());
     vec![repo.head()?.peel_to_commit().unwrap()]
   } else {
     let mut revwalk = repo.revwalk()?;
@@ -1054,6 +1049,8 @@ async fn main() -> Result<(), std::io::Error> {
   fs::create_dir_all(CONFIG.repos_root.clone()).ok();
 
   femme::start(femme::Logger::Pretty);
+
+  tide::log::info!("Please report bugs at https://github.com/Anonymous-G1t/Anonymous-G1t\n");
 
   let mut app = tide::new();
 
