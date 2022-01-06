@@ -1,13 +1,9 @@
-<hr />
+<hr/>
 <table>
-  {% let commit = last_commit.clone() %} {% include "commit-tr.html" %}
+  {% let commit = last_commit.clone() %}
+  {% include "commit-tr.html" %}
   <tr>
-    <td colspan="4">
-      <a
-        href="/{{repo|repo_name|urlencode_strict}}/log/{{spec}}/{{path.display()}}"
-        >...</a
-      >
-    </td>
+    <td colspan="4"><a href="/{{repo|repo_name|urlencode_strict}}/log/{{spec}}/{{path.display()}}">...</a></td>
   </tr>
 </table>
-<hr />
+<hr/>

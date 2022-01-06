@@ -1,14 +1,11 @@
-{% extends "base.html" %} {% block title %} {{repo|repo_name}}
-{{path.display()}} - {{crate::CONFIG.site_name}}{% endblock %} {% block content
-%} {% include "repo-navbar.html" %}
-<h3>
-  {{path.display()}}@<a
-    href="/{{repo|repo_name|urlencode_strict}}/tree/{{spec}}"
-    >{{spec}}</a
-  >
-</h3>
-<a
-  href="/{{repo|repo_name|urlencode_strict}}/tree/{{spec}}/raw/{{path.display()}}"
-  >raw</a
->
-{% include "last-commit.html" %} {{file_text|safe}} {% endblock %}
+{% extends "base.html" %}
+
+{% block title %}{{repo|repo_name}} {{path.display()}} - {{crate::CONFIG.site_name}}{% endblock %}
+
+{% block content %}
+  {% include "repo-navbar.html" %}
+  <h3>{{path.display()}}@<a href="/{{repo|repo_name|urlencode_strict}}/tree/{{spec}}">{{spec}}</a></h3>
+  <a href="/{{repo|repo_name|urlencode_strict}}/tree/{{spec}}/raw/{{path.display()}}">raw</a>
+  {% include "last-commit.html" %}
+  {{file_text|safe}}
+{% endblock %}

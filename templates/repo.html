@@ -1,18 +1,23 @@
-{% extends "base.html" %} {% block title %}{{repo|repo_name}} -
-{{crate::CONFIG.site_name}}{% endblock %} {% block content %} {% include
-"repo-navbar.html" %}
-<table>
-  {% for commit in commits %} {% include "commit-tr.html" %} {% endfor %}
+{% extends "base.html" %}
+
+{% block title %}{{repo|repo_name}} - {{crate::CONFIG.site_name}}{% endblock %}
+
+{% block content %}
+  {% include "repo-navbar.html" %}
+  <table>
+  {% for commit in commits %}
+    {% include "commit-tr.html" %}
+  {% endfor %}
   <tr>
-    <td colspan="4">
-      <a href="/{{repo|repo_name|urlencode_strict}}/log/">...</a>
-    </td>
+    <td colspan="4"><a href="/{{repo|repo_name|urlencode_strict}}/log/">...</a></td>
   </tr>
-</table>
-<hr />
-<div class="readme">
-  {% if !readme_text.is_empty() -%} {{ readme_text|safe }} {% else -%}
-  <em>(no README)</em>
+  </table>
+  <hr/>
+  <div class="readme">
+  {% if !readme_text.is_empty() -%}
+    {{ readme_text|safe }}
+  {% else -%}
+    <em>(no README)</em>
   {%- endif %}
-</div>
+  </div>
 {% endblock %}
