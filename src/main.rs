@@ -1059,40 +1059,40 @@ async fn main() -> Result<(), std::io::Error> {
   app.at("/").get(index);
 
   // repositories
-  app.at("/repos/:repo_name").get(repo_home);
-  app.at("/repos/:repo_name/").get(repo_home);
+  app.at("/repo/:repo_name").get(repo_home);
+  app.at("/repo/:repo_name/").get(repo_home);
 
   // git clone stuff
-  app.at("/repos/:repo_name/info/refs").get(git_data);
-  app.at("/repos/:repo_name/HEAD").get(git_data);
-  app.at("/repos/:repo_name/objects/*obj").get(git_data);
+  app.at("/repo/:repo_name/info/refs").get(git_data);
+  app.at("/repo/:repo_name/HEAD").get(git_data);
+  app.at("/repo/:repo_name/objects/*obj").get(git_data);
 
   // web pages
-  app.at("/repos/:repo_name/commit/:commit").get(repo_commit);
-  app.at("/repos/:repo_name/refs").get(repo_refs);
-  app.at("/repos/:repo_name/refs/").get(repo_refs);
-  app.at("/repos/:repo_name/refs.xml").get(repo_refs_feed);
-  app.at("/repos/:repo_name/refs/:tag").get(repo_tag);
-  app.at("/repos/:repo_name/log").get(repo_log);
-  app.at("/repos/:repo_name/log/").get(repo_log);
-  app.at("/repos/:repo_name/log/:ref").get(repo_log); // ref is optional
-  app.at("/repos/:repo_name/log/:ref/").get(repo_log); // ref is optional
+  app.at("/repo/:repo_name/commit/:commit").get(repo_commit);
+  app.at("/repo/:repo_name/refs").get(repo_refs);
+  app.at("/repo/:repo_name/refs/").get(repo_refs);
+  app.at("/repo/:repo_name/refs.xml").get(repo_refs_feed);
+  app.at("/repo/:repo_name/refs/:tag").get(repo_tag);
+  app.at("/repo/:repo_name/log").get(repo_log);
+  app.at("/repo/:repo_name/log/").get(repo_log);
+  app.at("/repo/:repo_name/log/:ref").get(repo_log); // ref is optional
+  app.at("/repo/:repo_name/log/:ref/").get(repo_log); // ref is optional
   app
-    .at("/repos/:repo_name/log/:ref/*object_name")
+    .at("/repo/:repo_name/log/:ref/*object_name")
     .get(repo_log);
-  app.at("/repos/:repo_name/log.xml").get(repo_log_feed);
+  app.at("/repo/:repo_name/log.xml").get(repo_log_feed);
   app
-    .at("/repos/:repo_name/log/:ref/feed.xml")
+    .at("/repo/:repo_name/log/:ref/feed.xml")
     .get(repo_log_feed); // ref is optional
-  app.at("/repos/:repo_name/tree").get(repo_file);
-  app.at("/repos/:repo_name/tree/").get(repo_file);
-  app.at("/repos/:repo_name/tree/:ref").get(repo_file); // ref is optional
-  app.at("/repos/:repo_name/tree/:ref/").get(repo_file); // ref is optional
+  app.at("/repo/:repo_name/tree").get(repo_file);
+  app.at("/repo/:repo_name/tree/").get(repo_file);
+  app.at("/repo/:repo_name/tree/:ref").get(repo_file); // ref is optional
+  app.at("/repo/:repo_name/tree/:ref/").get(repo_file); // ref is optional
   app
-    .at("/repos/:repo_name/tree/:ref/item/*object_name")
+    .at("/repo/:repo_name/tree/:ref/item/*object_name")
     .get(repo_file);
   app
-    .at("/repos/:repo_name/tree/:ref/raw/*object_name")
+    .at("/repo/:repo_name/tree/:ref/raw/*object_name")
     .get(repo_file_raw);
 
   // static files
