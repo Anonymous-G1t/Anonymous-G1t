@@ -1,3 +1,4 @@
+#![allow(clippy::from_over_into)]
 use askama::Template;
 use git2::{Commit, Diff, DiffOptions, Reference, Repository, Signature, Tag, Tree};
 use once_cell::sync::Lazy;
@@ -117,9 +118,9 @@ async fn index(req: Request<()>) -> tide::Result {
   if let Some(query) = req.url().query() {
     // gitweb does not use standard & separated query parameters
     let query = query
-      .split(";")
+      .split(';')
       .map(|s| {
-        let mut parts = s.splitn(2, "=");
+        let mut parts = s.splitn(2, '=');
         (parts.next().unwrap(), parts.next().unwrap())
       })
       .collect::<std::collections::HashMap<_, _>>();
@@ -133,7 +134,7 @@ async fn index(req: Request<()>) -> tide::Result {
           Some(&"shortlog") | Some(&"log") => {
             format!("/{}/log/{}", repo, query.get("h").cloned().unwrap_or(""))
           }
-          Some(_) => format!("/")
+          Some(_) => "/".to_string()
         })
         .into()
       );
@@ -201,7 +202,7 @@ async fn repo_home(req: Request<()>) -> tide::Result {
     Markdown
   }
 
-  let repo = repo_from_request(&req.param("repo_name")?)?;
+  let repo = repo_from_request(req.param("repo_name")?)?;
 
   let mut format = ReadmeFormat::Plaintext;
   let readme_text = repo
@@ -282,7 +283,7 @@ struct RepoLogTemplate<'a> {
 }
 
 async fn repo_log(req: Request<()>) -> tide::Result {
-  let repo = repo_from_request(&req.param("repo_name")?)?;
+  let repo = repo_from_request(req.param("repo_name")?)?;
   if repo.is_empty().unwrap() {
     // redirect to start page of repo
     let mut url = req.url().clone();
@@ -366,7 +367,7 @@ struct RepoRefTemplate<'a> {
 }
 
 async fn repo_refs(req: Request<()>) -> tide::Result {
-  let repo = repo_from_request(&req.param("repo_name")?)?;
+  let repo = repo_from_request(req.param("repo_name")?)?;
   if repo.is_empty().unwrap() {
     // redirect to start page of repo
     let mut url = req.url().clone();
@@ -444,7 +445,7 @@ fn last_commit_for<'a, S: git2::IntoCString>(
 
   revwalk
     .filter_map(|oid| repo.find_commit(oid.unwrap()).ok()) // TODO error handling
-    .filter(|commit| {
+    .find(|commit| {
       let tree = commit.tree().unwrap();
       if commit.parent_count() == 0 {
         repo
@@ -467,7 +468,6 @@ fn last_commit_for<'a, S: git2::IntoCString>(
         })
       }
     })
-    .next()
     .expect("file was not part of any commit")
 }
 
@@ -523,7 +523,7 @@ impl RepoCommitTemplate<'_> {
       .find_syntax_by_name("Diff")
       .expect("diff syntax missing");
     let mut highlighter =
-      ClassedHTMLGenerator::new_with_class_style(&syntax, &SYNTAXES, ClassStyle::Spaced);
+      ClassedHTMLGenerator::new_with_class_style(syntax, &SYNTAXES, ClassStyle::Spaced);
     LinesWithEndings::from(&buf)
       .for_each(|line| highlighter.parse_html_for_line_which_includes_newline(line));
     highlighter.finalize()
@@ -536,7 +536,7 @@ impl RepoCommitTemplate<'_> {
 
     // add badge if this commit is a tag
     let descr = self.commit.as_object().describe(
-      &DescribeOptions::new()
+      DescribeOptions::new()
         .describe_tags()
         .max_candidates_tags(0)
     );
@@ -648,7 +648,7 @@ async fn repo_file(req: Request<()>) -> tide::Result {
 
   let (path, tree_obj) = if let Ok(path) = req.param("object_name") {
     let path = Path::new(path);
-    (path, tree.get_path(&path)?.to_object(&repo)?)
+    (path, tree.get_path(path)?.to_object(&repo)?)
   } else {
     (Path::new(""), tree.into_object())
   };
@@ -664,7 +664,7 @@ async fn repo_file(req: Request<()>) -> tide::Result {
       repo: &repo,
       tree,
       path,
-      spec: &spec,
+      spec,
       last_commit
     }
     .into(),
@@ -711,7 +711,7 @@ async fn repo_file(req: Request<()>) -> tide::Result {
         let file_string = str::from_utf8(tree_obj.as_blob().unwrap().content())?;
         // create a highlighter that uses CSS classes so we can use prefers-color-scheme
         let mut highlighter =
-          ClassedHTMLGenerator::new_with_class_style(&syntax, &SYNTAXES, ClassStyle::Spaced);
+          ClassedHTMLGenerator::new_with_class_style(syntax, &SYNTAXES, ClassStyle::Spaced);
         LinesWithEndings::from(file_string)
           .for_each(|line| highlighter.parse_html_for_line_which_includes_newline(line));
 
@@ -739,7 +739,7 @@ async fn repo_file(req: Request<()>) -> tide::Result {
         repo: &repo,
         path,
         file_text: &output,
-        spec: &spec,
+        spec,
         last_commit
       }
       .into()
@@ -824,15 +824,13 @@ async fn git_data(req: Request<()>) -> tide::Result {
 async fn static_resource(req: Request<()>) -> tide::Result {
   use http::conditional::{IfModifiedSince, LastModified};
 
-  let file_mime_option = if let Some(file) = STATIC_DIR.get_file(&req.url().path()[1..]) {
-    Some((
+  let file_mime_option = STATIC_DIR.get_file(&req.url().path()[1..]).map(|file| {
+    (
       file,
       http::Mime::from_extension(file.path().extension().unwrap().to_string_lossy())
         .unwrap_or(http::mime::PLAIN)
-    ))
-  } else {
-    None
-  };
+    )
+  });
 
   // only use a File handle here because we might not need to load the file
   // let file_mime_option = match req.url().path() {
@@ -919,7 +917,7 @@ struct RepoLogFeedTemplate<'a> {
 }
 
 async fn repo_log_feed(req: Request<()>) -> tide::Result {
-  let repo = repo_from_request(&req.param("repo_name")?)?;
+  let repo = repo_from_request(req.param("repo_name")?)?;
   if repo.is_empty().unwrap() {
     // show a server error
     return Err(tide::Error::from_str(
@@ -980,7 +978,7 @@ struct RepoRefFeedTemplate<'a> {
 }
 
 async fn repo_refs_feed(req: Request<()>) -> tide::Result {
-  let repo = repo_from_request(&req.param("repo_name")?)?;
+  let repo = repo_from_request(req.param("repo_name")?)?;
   if repo.is_empty().unwrap() {
     // show a server error
     return Err(tide::Error::from_str(

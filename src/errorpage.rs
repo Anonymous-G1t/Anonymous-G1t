@@ -1,3 +1,4 @@
+#![allow(clippy::from_over_into)]
 use askama::Template;
 use tide::{Middleware, Next, Request, StatusCode};
 
