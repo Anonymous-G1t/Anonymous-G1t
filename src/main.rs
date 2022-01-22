@@ -1048,7 +1048,7 @@ async fn main() -> Result<(), std::io::Error> {
 
   femme::start(femme::Logger::Pretty);
 
-  tide::log::info!("Please report bugs at https://github.com/Anonymous-G1t/Anonymous-G1t\n");
+  tide::log::info!("Please report bugs at https://github.com/TheBotlyNoob/agit\n");
 
   let mut app = tide::new();
 
