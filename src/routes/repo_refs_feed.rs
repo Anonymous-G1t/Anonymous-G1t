@@ -8,7 +8,7 @@ struct RepoRefFeedTemplate<'a> {
   base_url: &'a str
 }
 
-pub async fn repo_refs_feed(req: Request<()>) -> tide::Result {
+pub(crate) async fn repo_refs_feed(req: Request<()>) -> tide::Result {
   let repo = repo_from_request(req.param("repo_name")?)?;
   if repo.is_empty().unwrap() {
     // show a server error

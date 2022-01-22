@@ -6,7 +6,7 @@ struct IndexTemplate {
   repos: Vec<Repository>
 }
 
-pub async fn index(req: Request<()>) -> tide::Result {
+pub(crate) async fn index(req: Request<()>) -> tide::Result {
   // check for gitweb parameters to redirect
   if let Some(query) = req.url().query() {
     // gitweb does not use standard & separated query parameters

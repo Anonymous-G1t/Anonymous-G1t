@@ -63,6 +63,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "agit"
+version = "0.1.0"
+dependencies = [
+ "askama",
+ "askama_tide",
+ "async-std",
+ "async-trait",
+ "chrono",
+ "femme 2.1.2",
+ "git2",
+ "include_dir",
+ "once_cell",
+ "percent-encoding",
+ "pico-args",
+ "pulldown-cmark",
+ "serde",
+ "syntect",
+ "tide",
+ "toml",
+]
+
+[[package]]
 name = "anyhow"
 version = "1.0.52"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1055,28 +1077,6 @@ checksum = "a92518e98c078586bc6c934028adcca4c92a53d6a958196de835170a01d84e4b"
 dependencies = [
  "adler",
  "autocfg",
-]
-
-[[package]]
-name = "mygit"
-version = "0.1.0"
-dependencies = [
- "askama",
- "askama_tide",
- "async-std",
- "async-trait",
- "chrono",
- "femme 2.1.2",
- "git2",
- "include_dir",
- "once_cell",
- "percent-encoding",
- "pico-args",
- "pulldown-cmark",
- "serde",
- "syntect",
- "tide",
- "toml",
 ]
 
 [[package]]

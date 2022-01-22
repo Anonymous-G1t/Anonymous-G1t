@@ -1,6 +1,6 @@
 use git2::{Commit, Repository, Signature, Time};
 
-pub fn format_datetime(time: &Time, format: &str) -> askama::Result<String> {
+pub(crate) fn format_datetime(time: &Time, format: &str) -> askama::Result<String> {
   use chrono::{FixedOffset, TimeZone};
 
   let offset = FixedOffset::east(time.offset_minutes() * 60);
@@ -8,7 +8,7 @@ pub fn format_datetime(time: &Time, format: &str) -> askama::Result<String> {
   Ok(datetime.format(format).to_string())
 }
 
-pub fn unix_perms(m: &i32) -> askama::Result<String> {
+pub(crate) fn unix_perms(m: &i32) -> askama::Result<String> {
   // https://unix.stackexchange.com/questions/450480/file-permission-with-six-bytes-in-git-what-does-it-mean
   // Git doesn’t store arbitrary modes, only a subset of the values are
   // allowed. Since the number of possible values is quite small, it is
@@ -26,7 +26,7 @@ pub fn unix_perms(m: &i32) -> askama::Result<String> {
   )
 }
 
-pub fn repo_name(repo: &Repository) -> askama::Result<&str> {
+pub(crate) fn repo_name(repo: &Repository) -> askama::Result<&str> {
   repo
     .workdir()
     // use the path for bare repositories
@@ -37,7 +37,7 @@ pub fn repo_name(repo: &Repository) -> askama::Result<&str> {
     .ok_or(askama::Error::Fmt(std::fmt::Error))
 }
 
-pub fn description(repo: &Repository) -> askama::Result<String> {
+pub(crate) fn description(repo: &Repository) -> askama::Result<String> {
   Ok(
     std::fs::read_to_string(repo.path().join("description"))
       .unwrap_or_default()
@@ -49,7 +49,7 @@ pub fn description(repo: &Repository) -> askama::Result<String> {
   )
 }
 
-pub fn last_modified(repo: &Repository) -> askama::Result<git2::Time> {
+pub(crate) fn last_modified(repo: &Repository) -> askama::Result<git2::Time> {
   Ok(
     repo
       .head()
@@ -61,7 +61,7 @@ pub fn last_modified(repo: &Repository) -> askama::Result<git2::Time> {
   )
 }
 
-pub fn repo_owner(repo: &Repository) -> askama::Result<String> {
+pub(crate) fn repo_owner(repo: &Repository) -> askama::Result<String> {
   Ok(
     repo
       .config()
@@ -71,7 +71,7 @@ pub fn repo_owner(repo: &Repository) -> askama::Result<String> {
   )
 }
 
-pub fn signature_email_link(signature: &Signature) -> askama::Result<String> {
+pub(crate) fn signature_email_link(signature: &Signature) -> askama::Result<String> {
   Ok(if let Some(email) = signature.email() {
     format!(
       "<a href=\"mailto:{}\">{}</a>",
@@ -83,7 +83,7 @@ pub fn signature_email_link(signature: &Signature) -> askama::Result<String> {
   })
 }
 
-pub fn short_id(commit: &Commit) -> askama::Result<String> {
+pub(crate) fn short_id(commit: &Commit) -> askama::Result<String> {
   Ok(
     commit
       .as_object()

@@ -10,7 +10,7 @@ struct ErrorTemplate {
   message: String
 }
 
-pub struct ErrorToErrorpage;
+pub(crate) struct ErrorToErrorpage;
 
 #[async_trait::async_trait]
 impl<State: Clone + Send + Sync + 'static> Middleware<State> for ErrorToErrorpage {
