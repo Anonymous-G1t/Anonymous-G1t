@@ -14,8 +14,9 @@ use syntect::{
 
 use tide::{http, Request, Response};
 
-mod errorpage;
-mod filters;
+pub mod errorpage;
+pub mod filters;
+pub mod routes;
 
 #[derive(Deserialize, Debug)]
 pub struct Config {
@@ -69,7 +70,7 @@ OPTIONS:
                         default is ./mygit.toml
 ";
 
-static CONFIG: Lazy<Config> = Lazy::new(args);
+pub static CONFIG: Lazy<Config> = Lazy::new(args);
 // so we only have to load this once to reduce startup time for syntax highlighting
 static SYNTAXES: Lazy<SyntaxSet> = Lazy::new(SyntaxSet::load_defaults_newlines);
 
@@ -108,59 +109,6 @@ fn args() -> Config {
 }
 
 #[derive(Template)]
-#[template(path = "index.html")] // using the template in this path, relative
-struct IndexTemplate {
-  repos: Vec<Repository>
-}
-
-async fn index(req: Request<()>) -> tide::Result {
-  // check for gitweb parameters to redirect
-  if let Some(query) = req.url().query() {
-    // gitweb does not use standard & separated query parameters
-    let query = query
-      .split(';')
-      .map(|s| {
-        let mut parts = s.splitn(2, '=');
-        (parts.next().unwrap(), parts.next().unwrap())
-      })
-      .collect::<std::collections::HashMap<_, _>>();
-    if let Some(repo) = query.get("p") {
-      return Ok(
-        tide::Redirect::permanent(match query.get("a") {
-          None | Some(&"summary") => format!("/{}/", repo),
-          Some(&"commit") | Some(&"commitdiff") => {
-            format!("/{}/commit/{}", repo, query.get("h").cloned().unwrap_or(""))
-          }
-          Some(&"shortlog") | Some(&"log") => {
-            format!("/{}/log/{}", repo, query.get("h").cloned().unwrap_or(""))
-          }
-          Some(_) => "/".to_string()
-        })
-        .into()
-      );
-    }
-  }
-
-  let repos = fs::read_dir(&CONFIG.repos_root)
-    .map(|entries| {
-      entries
-        .filter_map(|entry| Some(entry.ok()?.path()))
-        .filter_map(|entry| Repository::open(entry).ok())
-        .filter(|repo| {
-          // check for the export file in the git directory
-          // (the .git subfolder for non-bare repos)
-          repo.path().join(&CONFIG.export_ok).exists()
-        })
-        .collect::<Vec<_>>()
-    })
-    .map_err(|e| tide::log::warn!("Can't read repositories: {}", e))
-    .unwrap_or_default();
-  let index_template = IndexTemplate { repos };
-
-  Ok(index_template.into())
-}
-
-#[derive(Template)]
 #[template(path = "repo.html")] // using the template in this path, relative
 struct RepoHomeTemplate<'a> {
   repo: &'a Repository,
@@ -168,7 +116,7 @@ struct RepoHomeTemplate<'a> {
   readme_text: String
 }
 
-fn repo_from_request(repo_name: &str) -> Result<Repository, tide::Error> {
+pub fn repo_from_request(repo_name: &str) -> Result<Repository, tide::Error> {
   let repo_name = percent_encoding::percent_decode_str(repo_name)
     .decode_utf8_lossy()
     .into_owned();
@@ -969,79 +917,6 @@ async fn repo_log_feed(req: Request<()>) -> tide::Result {
   Ok(response)
 }
 
-#[derive(Template)]
-#[template(path = "refs.xml")]
-struct RepoRefFeedTemplate<'a> {
-  repo: &'a Repository,
-  tags: Vec<(String, String, Signature<'static>, String)>,
-  base_url: &'a str
-}
-
-async fn repo_refs_feed(req: Request<()>) -> tide::Result {
-  let repo = repo_from_request(req.param("repo_name")?)?;
-  if repo.is_empty().unwrap() {
-    // show a server error
-    return Err(tide::Error::from_str(
-      503,
-      "Cannot show feed because there is nothing here."
-    ));
-  }
-
-  let mut tags = Vec::new();
-  repo
-    .tag_foreach(|oid, name_bytes| {
-      // remove prefix "ref/tags/"
-      let name = String::from_utf8(name_bytes[10..].to_vec()).unwrap();
-
-      let obj = repo.find_object(oid, None).unwrap();
-      tags.push(match obj.kind().unwrap() {
-        git2::ObjectType::Tag => {
-          let tag = obj.as_tag().unwrap();
-          (
-            format!("refs/{}", name),
-            name,
-            tag
-              .tagger()
-              .unwrap_or_else(|| obj.peel_to_commit().unwrap().committer().to_owned())
-              .to_owned(),
-            tag.message().unwrap_or("").to_string()
-          )
-        }
-        git2::ObjectType::Commit => {
-          // lightweight tag, therefore no content
-          (
-            format!("commit/{}", name),
-            name,
-            obj.as_commit().unwrap().committer().to_owned(),
-            String::new()
-          )
-        }
-        _ => unreachable!("a tag was not a tag or lightweight tag")
-      });
-      true
-    })
-    .unwrap();
-  // sort so that newest tags are at the top
-  tags.sort_unstable_by(|(_, _, a, _), (_, _, b, _)| a.when().cmp(&b.when()).reverse());
-
-  let mut url = req.url().clone();
-  {
-    let mut segments = url.path_segments_mut().unwrap();
-    segments.pop(); // pop "log.xml" or "feed.xml"
-    if req.param("ref").is_ok() {
-      segments.pop(); // pop ref
-      segments.pop(); // pop "log/"
-    }
-  }
-
-  let tmpl = RepoRefFeedTemplate {
-    repo: &repo,
-    tags,
-    base_url: url.as_str()
-  };
-  Ok(tmpl.into())
-}
-
 #[async_std::main]
 async fn main() -> Result<(), std::io::Error> {
   fs::create_dir_all(CONFIG.repos_root.clone()).ok();
@@ -1054,7 +929,7 @@ async fn main() -> Result<(), std::io::Error> {
 
   app.with(errorpage::ErrorToErrorpage);
 
-  app.at("/").get(index);
+  app.at("/").get(routes::index::index);
 
   // repositories
   app.at("/repo/:repo_name").get(repo_home);
@@ -1069,7 +944,9 @@ async fn main() -> Result<(), std::io::Error> {
   app.at("/repo/:repo_name/commit/:commit").get(repo_commit);
   app.at("/repo/:repo_name/refs").get(repo_refs);
   app.at("/repo/:repo_name/refs/").get(repo_refs);
-  app.at("/repo/:repo_name/refs.xml").get(repo_refs_feed);
+  app
+    .at("/repo/:repo_name/refs.xml")
+    .get(routes::repo_refs_feed);
   app.at("/repo/:repo_name/refs/:tag").get(repo_tag);
   app.at("/repo/:repo_name/log").get(repo_log);
   app.at("/repo/:repo_name/log/").get(repo_log);
@@ -1099,4 +976,12 @@ async fn main() -> Result<(), std::io::Error> {
   app.listen(format!("0.0.0.0:{}", CONFIG.port)).await?;
 
   Ok(())
+}
+
+pub mod route_prelude {
+  pub use crate::{filters, repo_from_request, CONFIG};
+  pub use askama::Template;
+  pub use git2::{Repository, Signature};
+  pub use std::fs;
+  pub use tide::Request;
 }
