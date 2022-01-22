@@ -49,7 +49,7 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
           output
         }
         // already is HTML
-        ReadmeFormat::Html => text.to_string(),
+        ReadmeFormat::Html => text.into(),
         // render Markdown to HTML
         ReadmeFormat::Markdown => {
           let mut output = String::new();

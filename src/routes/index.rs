@@ -27,7 +27,7 @@ pub(crate) async fn index(req: Request<()>) -> tide::Result {
           Some(&"shortlog") | Some(&"log") => {
             format!("/{}/log/{}", repo, query.get("h").cloned().unwrap_or(""))
           }
-          Some(_) => "/".to_string()
+          Some(_) => "/".into()
         })
         .into()
       );

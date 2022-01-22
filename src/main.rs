@@ -40,15 +40,15 @@ mod defaults {
   }
 
   pub(crate) fn repo_directory() -> String {
-    "repos".to_string()
+    "repos".into()
   }
 
   pub(crate) fn site_name() -> String {
-    "mygit".to_string()
+    "mygit".into()
   }
 
   pub(crate) fn export_ok() -> String {
-    "git-daemon-export-ok".to_string()
+    "git-daemon-export-ok".into()
   }
 
   pub(crate) fn log_per_page() -> usize {

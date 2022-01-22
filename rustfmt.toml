@@ -1,4 +1,4 @@
 edition = "2021"
 tab_spaces = 2
 normalize_comments = true
-trailing_comma = "Never"
+trailing_comma = "Vertical"

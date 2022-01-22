@@ -16,8 +16,9 @@ Build your binary with `cargo build --release`. Then probably move it somewhere
 sensible so it's in your $PATH or use `cargo install --release`. Packages and
 prebuilt binaries are TBD.
 
-Probably you want to use your linux distro's init system to keep this server
+You probably want to use your linux distro's init system to keep this server
 running.
+
 
 ## Setting up your repos
 

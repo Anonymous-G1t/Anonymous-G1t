@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}{{repo|repo_name}} {{path.display()}} - {{crate::CONFIG.site_name}}{% endblock %}
+{% block title %}{{ repo|repo_name }} {{ path.display() }} - {{ crate::CONFIG.site_name }}{% endblock %}
 
 {% block content %}
   {% include "repo-navbar.html" %}
   <div class="main">
     {% if path.to_string_lossy() != "" %}
-    <h3>{{path.to_string_lossy()}}/@<a href="/{{repo|repo_name|urlencode_strict}}/tree/{{spec}}">{{spec}}</a></h3>
+    <h3>{{ path.to_string_lossy() }}/@<a href="/{{ repo|repo_name|urlencode_strict }}/tree/{{ spec }}">{{ spec }}</a></h3>
     {% else %}
     <h3>{{ spec }}</h3>
   {% endif %}
@@ -21,7 +21,7 @@
       {% if obj.is_ok() %}
       {% let o = obj.unwrap() %}
       <td class="filename">
-        <a href="/{{repo|repo_name|urlencode_strict}}/tree/{{ spec }}/item/{{path.join(entry.name().unwrap()).to_string_lossy()}}">
+        <a href="/{{ repo|repo_name|urlencode_strict }}/tree/{{ spec }}/item/{{ path.join(entry.name().unwrap()).to_string_lossy() }}">
         {{ entry.name().unwrap() }}{% if o.as_tree().is_some() %}/{% endif %}</a>
       </td>
       <td class="filesize">

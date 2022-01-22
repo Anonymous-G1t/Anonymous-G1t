@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}{{repo|repo_name}} commit {{commit|short_id}} - {{crate::CONFIG.site_name}}{% endblock %}
+{% block title %}{{ repo|repo_name }} commit {{ commit|short_id }} - {{ crate::CONFIG.site_name }}{% endblock %}
 
 {% block content %}
   {% include "repo-navbar.html" %}
-  <b>Commit:</b> <span class="commit-hash">{{commit.id()}}</span> (<a href="/{{repo|repo_name|urlencode_strict}}/tree/{{commit.id()}}">tree</a>)
-  {{self.refs()|safe}}
+  <b>Commit:</b> <span class="commit-hash">{{ commit.id() }}</span> (<a href="/{{ repo|repo_name|urlencode_strict }}/tree/{{ commit.id() }}">tree</a>)
+  {{ self.refs()|safe }}
   <br>
   {% for parent_id in self.parent_ids() %}
-  <b>Parent:</b> <a href="/{{repo|repo_name|urlencode_strict}}/commit/{{parent_id}}" class="commit-hash">{{parent_id}}</a> (<a href="/{{repo|repo_name|urlencode_strict}}/tree/{{parent_id}}">tree</a>)
+  <b>Parent:</b> <a href="/{{ repo|repo_name|urlencode_strict }}/commit/{{ parent_id }}" class="commit-hash">{{ parent_id }}</a> (<a href="/{{ repo|repo_name|urlencode_strict }}/tree/{{ parent_id }}">tree</a>)
   <br>
   {% endfor %}
-  <b>Author:</b> {{commit.author()|signature_email_link|safe}}
+  <b>Author:</b> {{ commit.author()|signature_email_link|safe }}
   <br>
   {% if commit.author().name() != commit.committer().name() || commit.author().email() != commit.committer().email() %}
-  <b>Committer:</b> {{commit.committer()|signature_email_link|safe}}
+  <b>Committer:</b> {{ commit.committer()|signature_email_link|safe }}
   <br>
   {% endif %}
-  <b>Date:</b> {{commit.time()|format_datetime("%c %z")}}
+  <b>Date:</b> {{ commit.time()|format_datetime("%c %z") }}
   <br>
   {% let stats = diff.stats().unwrap() %}
-  {{stats.files_changed()}} files changed; {{stats.insertions()}} insertions {{stats.deletions()}} deletions
+  {{ stats.files_changed() }} files changed; {{ stats.insertions() }} insertions {{ stats.deletions() }} deletions
   <hr/>
-  <pre class="commit-message">{{commit.message().unwrap()}}</pre>
+  <pre class="commit-message">{{ commit.message().unwrap() }}</pre>
   <hr/>
-  <pre id="diff">{{self.diff()|safe}}</pre>
+  <pre id="diff">{{ self.diff()|safe }}</pre>
 {% endblock %}

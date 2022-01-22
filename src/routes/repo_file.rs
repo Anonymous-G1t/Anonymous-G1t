@@ -81,7 +81,7 @@ pub(crate) async fn repo_file(req: Request<()>) -> tide::Result {
                         req.param("repo_name").unwrap(),
                         path.display()
                     ),
-                    _ => "Cannot display binary file.".to_string()
+                    _ => "Cannot display binary file.".into()
                 }
       } else {
         // get file contents from git object

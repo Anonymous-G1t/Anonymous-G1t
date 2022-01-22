@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{repo|repo_name}} - {{crate::CONFIG.site_name}}{% endblock %}
+{% block title %}{{ repo|repo_name }} - {{ crate::CONFIG.site_name }}{% endblock %}
 
 {% block content %}
   {% include "repo-navbar.html" %}
@@ -9,7 +9,7 @@
     {% include "commit-tr.html" %}
   {% endfor %}
   <tr>
-    <td colspan="4"><a href="/{{repo|repo_name|urlencode_strict}}/log/">...</a></td>
+    <td colspan="4"><a href="/{{ repo|repo_name|urlencode_strict }}/log/">...</a></td>
   </tr>
   </table>
   <hr/>

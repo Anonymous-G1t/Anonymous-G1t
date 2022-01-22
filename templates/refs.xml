@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>{{repo|repo_name}} tags</title>
-    <link>{{base_url}}/refs#tags</link>
+    <title>{{ repo|repo_name }} tags</title>
+    <link>{{ base_url }}/refs#tags</link>
     <description>
-      Tags of the repository {{repo|repo_name}}:
-      &lt;p&gt;{{repo|description}}&lt;/p&gt;
+      Tags of the repository {{ repo|repo_name }}:
+      &lt;p&gt;{{ repo|description }}&lt;/p&gt;
     </description>
     <ttl>30</ttl>
     <generator>agit - a fork of mygit</generator>
-    <lastBuildDate>{{repo|last_modified|format_datetime("%a, %e %b %Y %T %z")}}</lastBuildDate>
-    <managingEditor>{{repo|repo_owner}}</managingEditor>
+    <lastBuildDate>{{ repo|last_modified|format_datetime("%a, %e %b %Y %T %z") }}</lastBuildDate>
+    <managingEditor>{{ repo|repo_owner }}</managingEditor>
     <docs>https://www.rssboard.org/rss-specification</docs>
     {% for (link, tag, signature, message) in tags %}
       <item>
-        <title>{{tag}}</title>
-        <link>{{base_url}}/{{link}}</link>
-        <guid isPermaLink="true">{{base_url}}/{{link}}</guid>
-        <description>&lt;pre&gt;{{message}}&lt;/pre&gt;</description>
-        <author>{{signature.email().unwrap_or("")}}</author>
-        <pubDate>{{signature.when()|format_datetime("%a, %e %b %Y %T %z")}}</pubDate>
+        <title>{{ tag }}</title>
+        <link>{{ base_url }}/{{ link }}</link>
+        <guid isPermaLink="true">{{ base_url }}/{{ link }}</guid>
+        <description>&lt;pre&gt;{{ message }}&lt;/pre&gt;</description>
+        <author>{{ signature.email().unwrap_or("") }}</author>
+        <pubDate>{{ signature.when()|format_datetime("%a, %e %b %Y %T %z") }}</pubDate>
       </item>
     {% endfor %}
   </channel>

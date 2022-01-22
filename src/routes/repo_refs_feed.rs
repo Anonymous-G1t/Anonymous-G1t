@@ -35,7 +35,7 @@ pub(crate) async fn repo_refs_feed(req: Request<()>) -> tide::Result {
               .tagger()
               .unwrap_or_else(|| obj.peel_to_commit().unwrap().committer().to_owned())
               .to_owned(),
-            tag.message().unwrap_or("").to_string()
+            tag.message().unwrap_or("").into()
           )
         }
         git2::ObjectType::Commit => {

@@ -45,7 +45,7 @@ pub(crate) fn description(repo: &Repository) -> askama::Result<String> {
       .lines()
       .next()
       .unwrap_or_default()
-      .to_string()
+      .into()
   )
 }
 
@@ -91,6 +91,6 @@ pub(crate) fn short_id(commit: &Commit) -> askama::Result<String> {
       .unwrap()
       .as_str()
       .unwrap()
-      .to_string()
+      .into()
   )
 }
