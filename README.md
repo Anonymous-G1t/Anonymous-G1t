@@ -1,8 +1,6 @@
-# mygit
+# agit
 
-NOTE: This project is not actively developed. I decided to use cgit instead.
-
-Simple self-hosted git server, written in Rust
+Simple self-hosted anonymous git server, written in Rust
 
 Lighter weight than [gitea](https://gitea.io/en-us/), more modern than
 [cgit](https://git.zx2c4.com/cgit/) or
@@ -18,7 +16,6 @@ prebuilt binaries are TBD.
 
 You probably want to use your linux distro's init system to keep this server
 running.
-
 
 ## Setting up your repos
 

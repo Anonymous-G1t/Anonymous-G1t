@@ -29,7 +29,7 @@ pub(crate) struct Config {
   #[serde(default = "String::new")]
   clone_base: String,
   #[serde(default = "defaults::log_per_page")]
-  log_per_page: usize
+  log_per_page: usize,
 }
 
 /// Defaults for the configuration options
@@ -113,14 +113,6 @@ pub(crate) fn repo_from_request(repo_name: &str) -> Result<Repository, tide::Err
     .join(repo_name)
     .canonicalize()?;
 
-  // prevent path traversal
-  if !repo_path.starts_with(&CONFIG.repos_root) {
-    return Err(tide::Error::from_str(
-      403,
-      "You do not have access to this resource."
-    ));
-  }
-
   Repository::open(repo_path)
     .ok()
     // outside users should not be able to tell the difference between
@@ -132,7 +124,7 @@ pub(crate) fn repo_from_request(repo_name: &str) -> Result<Repository, tide::Err
 fn last_commit_for<'a, S: git2::IntoCString>(
   repo: &'a Repository,
   spec: &str,
-  path: S
+  path: S,
 ) -> Commit<'a> {
   let mut revwalk = repo.revwalk().unwrap();
   revwalk
@@ -143,7 +135,7 @@ fn last_commit_for<'a, S: git2::IntoCString>(
         .unwrap()
         .peel_to_commit()
         .unwrap()
-        .id()
+        .id(),
     )
     .unwrap();
   revwalk.set_sorting(git2::Sort::TIME).unwrap();
@@ -186,7 +178,7 @@ struct RepoTreeTemplate<'a> {
   tree: Tree<'a>,
   path: &'a Path,
   spec: &'a str,
-  last_commit: Commit<'a>
+  last_commit: Commit<'a>,
 }
 
 async fn git_data(req: Request<()>) -> tide::Result {
@@ -203,7 +195,7 @@ async fn git_data(req: Request<()>) -> tide::Result {
     tide::log::warn!("Attempt to acces file outside of repo dir: {:?}", path);
     Err(tide::Error::from_str(
       403,
-      "You do not have access to this file."
+      "You do not have access to this file.",
     ))
   } else if !path.is_file() {
     // Either the requested resource does not exist or it is not
@@ -291,7 +283,7 @@ pub(crate) mod route_prelude {
   pub(crate) use std::{fs, path::Path, str};
   pub(crate) use syntect::{
     html::{ClassStyle, ClassedHTMLGenerator},
-    util::LinesWithEndings
+    util::LinesWithEndings,
   };
   pub(crate) use tide::{http, Request, Response};
 }
