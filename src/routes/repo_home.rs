@@ -5,7 +5,7 @@ use crate::route_prelude::*;
 struct RepoHomeTemplate<'a> {
   repo: &'a Repository,
   commits: Vec<Commit<'a>>,
-  readme_text: String
+  readme_text: String,
 }
 
 pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
@@ -14,7 +14,7 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
   enum ReadmeFormat {
     Plaintext,
     Html,
-    Markdown
+    Markdown,
   }
 
   let repo = repo_from_request(req.param("repo_name")?)?;
@@ -72,7 +72,7 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
 
     revwalk.set_sorting(git2::Sort::TIME).unwrap();
     revwalk
-      .filter_map(|oid| repo.find_commit(oid.unwrap()).ok()) // TODO error handling
+      .filter_map(|oid| repo.find_commit(oid.ok()?).ok())
       .take(3)
       .collect()
   };
@@ -81,8 +81,8 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
     RepoHomeTemplate {
       repo: &repo,
       commits,
-      readme_text
+      readme_text,
     }
-    .into()
+    .into(),
   )
 }

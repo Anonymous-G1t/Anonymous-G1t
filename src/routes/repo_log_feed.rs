@@ -6,7 +6,7 @@ struct RepoLogFeedTemplate<'a> {
   repo: &'a Repository,
   commits: Vec<Commit<'a>>,
   branch: &'a str,
-  base_url: &'a str
+  base_url: &'a str,
 }
 
 pub(crate) async fn repo_log_feed(req: Request<()>) -> tide::Result {
@@ -15,7 +15,7 @@ pub(crate) async fn repo_log_feed(req: Request<()>) -> tide::Result {
     // show a server error
     return Err(tide::Error::from_str(
       503,
-      "Cannot show feed because there are no commits."
+      "Cannot show feed because there are no commits.",
     ));
   }
 
@@ -55,7 +55,7 @@ pub(crate) async fn repo_log_feed(req: Request<()>) -> tide::Result {
     repo: &repo,
     commits,
     branch,
-    base_url: url.as_str()
+    base_url: url.as_str(),
   };
   let mut response: tide::Response = tmpl.into();
   response.set_content_type("application/rss+xml");

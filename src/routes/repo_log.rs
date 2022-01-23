@@ -7,7 +7,7 @@ struct RepoLogTemplate<'a> {
   commits: Vec<Commit<'a>>,
   branch: &'a str,
   // the spec the user should be linked to to see the next page of commits
-  next_page: Option<String>
+  next_page: Option<String>,
 }
 
 pub(crate) async fn repo_log(req: Request<()>) -> tide::Result {
@@ -81,7 +81,7 @@ pub(crate) async fn repo_log(req: Request<()>) -> tide::Result {
     repo: &repo,
     commits,
     branch,
-    next_page
+    next_page,
   };
   Ok(tmpl.into())
 }

@@ -8,7 +8,7 @@ pub(crate) async fn static_resource(req: Request<()>) -> tide::Result {
     (
       file,
       http::Mime::from_extension(file.path().extension().unwrap().to_string_lossy())
-        .unwrap_or(http::mime::PLAIN)
+        .unwrap_or(http::mime::PLAIN),
     )
   });
 
@@ -69,10 +69,9 @@ pub(crate) async fn static_resource(req: Request<()>) -> tide::Result {
         }
         http::Method::Get => {
           // load the file from disk
-          let content = file.contents_utf8().unwrap();
-          response.set_body(content);
+          response.set_body(file.contents());
         }
-        _ => return Err(tide::Error::from_str(405, ""))
+        _ => return Err(tide::Error::from_str(405, "")),
       }
 
       response.set_content_type(mime);
@@ -83,6 +82,6 @@ pub(crate) async fn static_resource(req: Request<()>) -> tide::Result {
       Err(tide::Error::from_str(404, "This page does not exist."))
     }
     // issue a 405 error since this is used as the catchall
-    None => Err(tide::Error::from_str(405, ""))
+    None => Err(tide::Error::from_str(405, "")),
   }
 }

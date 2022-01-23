@@ -3,7 +3,7 @@ use crate::route_prelude::*;
 #[derive(Template)]
 #[template(path = "index.html")] // using the template in this path, relative
 struct IndexTemplate {
-  repos: Vec<Repository>
+  repos: Vec<Repository>,
 }
 
 pub(crate) async fn index(req: Request<()>) -> tide::Result {
@@ -27,9 +27,9 @@ pub(crate) async fn index(req: Request<()>) -> tide::Result {
           Some(&"shortlog") | Some(&"log") => {
             format!("/{}/log/{}", repo, query.get("h").cloned().unwrap_or(""))
           }
-          Some(_) => "/".into()
+          Some(_) => "/".into(),
         })
-        .into()
+        .into(),
       );
     }
   }

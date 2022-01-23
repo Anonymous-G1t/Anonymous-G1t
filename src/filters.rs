@@ -20,9 +20,9 @@ pub(crate) fn unix_perms(m: &i32) -> askama::Result<String> {
       0o100644 => "-rw-r--r--", // regular file, default umask
       0o120000 => "lrwxrwxrwx", // symlink
       0o160000 => "m---------", // submodule
-      _ => unreachable!("unknown file mode")
+      _ => unreachable!("unknown file mode"),
     }
-    .into()
+    .into(),
   )
 }
 
@@ -45,7 +45,7 @@ pub(crate) fn description(repo: &Repository) -> askama::Result<String> {
       .lines()
       .next()
       .unwrap_or_default()
-      .into()
+      .into(),
   )
 }
 
@@ -57,7 +57,7 @@ pub(crate) fn last_modified(repo: &Repository) -> askama::Result<git2::Time> {
       .peel_to_commit()
       .unwrap()
       .committer()
-      .when()
+      .when(),
   )
 }
 
@@ -67,7 +67,7 @@ pub(crate) fn repo_owner(repo: &Repository) -> askama::Result<String> {
       .config()
       .unwrap()
       .get_string("gitweb.owner")
-      .unwrap_or_default()
+      .unwrap_or_default(),
   )
 }
 
@@ -91,6 +91,6 @@ pub(crate) fn short_id(commit: &Commit) -> askama::Result<String> {
       .unwrap()
       .as_str()
       .unwrap()
-      .into()
+      .into(),
   )
 }

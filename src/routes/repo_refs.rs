@@ -5,7 +5,7 @@ use crate::route_prelude::*;
 struct RepoRefTemplate<'a> {
   repo: &'a Repository,
   branches: Vec<Reference<'a>>,
-  tags: Vec<(String, String, Signature<'static>)>
+  tags: Vec<(String, String, Signature<'static>)>,
 }
 
 pub(crate) async fn repo_refs(req: Request<()>) -> tide::Result {
@@ -38,17 +38,17 @@ pub(crate) async fn repo_refs(req: Request<()>) -> tide::Result {
             .unwrap()
             .tagger()
             .unwrap_or_else(|| obj.peel_to_commit().unwrap().committer().to_owned())
-            .to_owned()
+            .to_owned(),
         ),
         git2::ObjectType::Commit => {
           // lightweight tag
           (
             format!("commit/{}", name),
             name,
-            obj.as_commit().unwrap().committer().to_owned()
+            obj.as_commit().unwrap().committer().to_owned(),
           )
         }
-        _ => unreachable!("a tag was not a tag or lightweight tag")
+        _ => unreachable!("a tag was not a tag or lightweight tag"),
       });
       true
     })
@@ -58,7 +58,7 @@ pub(crate) async fn repo_refs(req: Request<()>) -> tide::Result {
   let tmpl = RepoRefTemplate {
     repo: &repo,
     branches,
-    tags
+    tags,
   };
   Ok(tmpl.into())
 }

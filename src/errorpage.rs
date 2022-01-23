@@ -7,7 +7,7 @@ use tide::{Middleware, Next, Request, StatusCode};
 struct ErrorTemplate {
   resource: String,
   status: StatusCode,
-  message: String
+  message: String,
 }
 
 pub(crate) struct ErrorToErrorpage;
@@ -31,12 +31,12 @@ impl<State: Clone + Send + Sync + 'static> Middleware<State> for ErrorToErrorpag
           StatusCode::InternalServerError if !cfg!(debug_assertions) => {
             "Internal Server Error".to_owned()
           }
-          _ => err.into_inner().to_string()
+          _ => err.into_inner().to_string(),
         };
         response = ErrorTemplate {
           resource,
           status,
-          message
+          message,
         }
         .into();
         response.set_status(status);

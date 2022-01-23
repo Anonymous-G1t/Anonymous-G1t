@@ -5,7 +5,7 @@ use crate::route_prelude::*;
 struct RepoCommitTemplate<'a> {
   repo: &'a Repository,
   commit: Commit<'a>,
-  diff: &'a Diff<'a>
+  diff: &'a Diff<'a>,
 }
 
 impl RepoCommitTemplate<'_> {
@@ -24,7 +24,7 @@ impl RepoCommitTemplate<'_> {
             match line.origin() {
               'F' | 'H' => {}
               c @ ' ' | c @ '+' | c @ '-' | c @ '=' | c @ '<' | c @ '>' => buf.push(c),
-              _ => unreachable!()
+              _ => unreachable!(),
             }
             buf.push_str(content);
             true
@@ -33,7 +33,7 @@ impl RepoCommitTemplate<'_> {
             buf.push_str("Cannot display diff for binary file.");
             false
           }
-        }
+        },
       )
       .unwrap();
 
@@ -57,7 +57,7 @@ impl RepoCommitTemplate<'_> {
     let descr = self.commit.as_object().describe(
       DescribeOptions::new()
         .describe_tags()
-        .max_candidates_tags(0)
+        .max_candidates_tags(0),
     );
     if let Ok(descr) = descr {
       // this can be a tag or lightweight tag, the refs path will redirect
@@ -109,7 +109,7 @@ pub(crate) async fn repo_commit(req: Request<()>) -> tide::Result {
   let tmpl = RepoCommitTemplate {
     repo: &repo,
     commit,
-    diff: &diff
+    diff: &diff,
   };
   Ok(tmpl.into())
 }

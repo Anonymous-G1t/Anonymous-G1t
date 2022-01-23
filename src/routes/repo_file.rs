@@ -7,7 +7,7 @@ struct RepoFileTemplate<'a> {
   path: &'a Path,
   file_text: &'a str,
   spec: &'a str,
-  last_commit: Commit<'a>
+  last_commit: Commit<'a>,
 }
 
 pub(crate) async fn repo_file(req: Request<()>) -> tide::Result {
@@ -44,7 +44,7 @@ pub(crate) async fn repo_file(req: Request<()>) -> tide::Result {
       tree,
       path,
       spec,
-      last_commit
+      last_commit,
     }
     .into(),
     // this is not a subtree, so it should be a blob i.e. file
@@ -115,7 +115,7 @@ pub(crate) async fn repo_file(req: Request<()>) -> tide::Result {
         path,
         file_text: &output,
         spec,
-        last_commit
+        last_commit,
       }
       .into()
     }
@@ -152,7 +152,7 @@ pub async fn repo_file_raw(req: Request<()>) -> tide::Result {
         Response::builder(200)
           .body(blob.content().to_vec())
           .content_type(mime)
-          .build()
+          .build(),
       )
     }
     Err(e) => Err(tide::Error::from_str(
@@ -160,7 +160,7 @@ pub async fn repo_file_raw(req: Request<()>) -> tide::Result {
       format!(
         "There is no such file in this revision of the repository: {}",
         e
-      )
-    ))
+      ),
+    )),
   }
 }

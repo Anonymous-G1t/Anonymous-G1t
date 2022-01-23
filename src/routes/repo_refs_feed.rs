@@ -5,7 +5,7 @@ use crate::route_prelude::*;
 struct RepoRefFeedTemplate<'a> {
   repo: &'a Repository,
   tags: Vec<(String, String, Signature<'static>, String)>,
-  base_url: &'a str
+  base_url: &'a str,
 }
 
 pub(crate) async fn repo_refs_feed(req: Request<()>) -> tide::Result {
@@ -14,7 +14,7 @@ pub(crate) async fn repo_refs_feed(req: Request<()>) -> tide::Result {
     // show a server error
     return Err(tide::Error::from_str(
       503,
-      "Cannot show feed because there is nothing here."
+      "Cannot show feed because there is nothing here.",
     ));
   }
 
@@ -35,7 +35,7 @@ pub(crate) async fn repo_refs_feed(req: Request<()>) -> tide::Result {
               .tagger()
               .unwrap_or_else(|| obj.peel_to_commit().unwrap().committer().to_owned())
               .to_owned(),
-            tag.message().unwrap_or("").into()
+            tag.message().unwrap_or("").into(),
           )
         }
         git2::ObjectType::Commit => {
@@ -44,10 +44,10 @@ pub(crate) async fn repo_refs_feed(req: Request<()>) -> tide::Result {
             format!("commit/{}", name),
             name,
             obj.as_commit().unwrap().committer().to_owned(),
-            String::new()
+            String::new(),
           )
         }
-        _ => unreachable!("a tag was not a tag or lightweight tag")
+        _ => unreachable!("a tag was not a tag or lightweight tag"),
       });
       true
     })
@@ -68,7 +68,7 @@ pub(crate) async fn repo_refs_feed(req: Request<()>) -> tide::Result {
   let tmpl = RepoRefFeedTemplate {
     repo: &repo,
     tags,
-    base_url: url.as_str()
+    base_url: url.as_str(),
   };
 
   Ok(tmpl.into())
