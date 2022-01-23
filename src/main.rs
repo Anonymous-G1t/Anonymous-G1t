@@ -227,84 +227,72 @@ async fn main() -> Result<(), std::io::Error> {
 
   // repositories
   app
-    .at(&format!("/{}/:repo_name", CONFIG.repos_root))
-    .get(routes::repo_home);
-  app
-    .at(&format!("/{}/:repo_name/", CONFIG.repos_root))
+    .at("/:repo_name")
+    .get(routes::repo_home)
+    .at("/:repo_name/")
     .get(routes::repo_home);
 
   // git clone stuff
   app
-    .at(&format!("/{}/:repo_name/info/refs", CONFIG.repos_root))
-    .get(git_data);
-  app
-    .at(&format!("/{}/:repo_name/HEAD", CONFIG.repos_root))
-    .get(git_data);
-  app
-    .at(&format!("/{}/:repo_name/objects/*obj", CONFIG.repos_root))
+    .at("/:repo_name/info/refs")
+    .get(git_data)
+    .at("/:repo_name/HEAD")
+    .get(git_data)
+    .at("/:repo_name/objects/*obj")
     .get(git_data);
 
   // web pages
   app
-    .at(&format!("/{}/:repo_name/commit/:commit", CONFIG.repos_root))
-    .get(routes::repo_commit);
-  app
-    .at(&format!("/{}/:repo_name/refs", CONFIG.repos_root))
-    .get(routes::repo_refs);
-  app
-    .at(&format!("/{}/:repo_name/refs/", CONFIG.repos_root))
-    .get(routes::repo_refs);
-  app
-    .at(&format!("/{}/:repo_name/refs.xml", CONFIG.repos_root))
-    .get(routes::repo_refs_feed);
-  app
-    .at(&format!("/{}/:repo_name/refs/:tag", CONFIG.repos_root))
+    .at("/:repo_name/commit/:commit")
+    .get(routes::repo_commit)
+    .at("/:repo_name/refs")
+    .get(routes::repo_refs)
+    .at("/:repo_name/refs/")
+    .get(routes::repo_refs)
+    .at("/:repo_name/refs.xml")
+    .get(routes::repo_refs_feed)
+    .at("/:repo_name/refs/:tag")
     .get(routes::repo_tag);
+
   app
-    .at(&format!("/{}/:repo_name/log", CONFIG.repos_root))
-    .get(routes::repo_log);
-  app
-    .at(&format!("/{}/:repo_name/log/", CONFIG.repos_root))
-    .get(routes::repo_log);
-  app
-    .at(&format!("/{}/:repo_name/log/:ref", CONFIG.repos_root))
-    .get(routes::repo_log); // ref is optional
-  app
-    .at(&format!("/{}/:repo_name/log/:ref/", CONFIG.repos_root))
-    .get(routes::repo_log); // ref is optional
-  app
+    .at("/:repo_name/log")
+    .get(routes::repo_log)
+    .at("/:repo_name/log/")
+    .get(routes::repo_log)
+    .at("/:repo_name/log/:ref")
+    .get(routes::repo_log) // ref is optional
+    .at("/:repo_name/log/:ref/")
+    .get(routes::repo_log) // ref is optional
     .at(&format!(
       "/{}/:repo_name/log/:ref/*object_name",
       CONFIG.repos_root
     ))
-    .get(routes::repo_log);
-  app
-    .at(&format!("/{}/:repo_name/log.xml", CONFIG.repos_root))
-    .get(routes::repo_log_feed);
-  app
+    .get(routes::repo_log)
+    .at("/:repo_name/log.xml")
+    .get(routes::repo_log_feed)
     .at(&format!(
       "/{}/:repo_name/log/:ref/feed.xml",
       CONFIG.repos_root
     ))
     .get(routes::repo_log_feed); // ref is optional
+
   app
-    .at(&format!("/{}/:repo_name/tree", CONFIG.repos_root))
-    .get(routes::repo_file);
-  app
-    .at(&format!("/{}/:repo_name/tree/", CONFIG.repos_root))
-    .get(routes::repo_file);
-  app
-    .at(&format!("/{}/:repo_name/tree/:ref", CONFIG.repos_root))
+    .at("/:repo_name/tree")
+    .get(routes::repo_file)
+    .at("/:repo_name/tree/")
+    .get(routes::repo_file)
+    .at("/:repo_name/tree/:ref")
+    .get(routes::repo_file) // ref is optional
+    .at("/:repo_name/tree/:ref/")
     .get(routes::repo_file); // ref is optional
-  app
-    .at(&format!("/{}/:repo_name/tree/:ref/", CONFIG.repos_root))
-    .get(routes::repo_file); // ref is optional
+
   app
     .at(&format!(
       "/{}/:repo_name/tree/:ref/item/*object_name",
       CONFIG.repos_root
     ))
     .get(routes::repo_file);
+
   app
     .at(&format!(
       "/{}/:repo_name/tree/:ref/raw/*object_name",
@@ -313,7 +301,7 @@ async fn main() -> Result<(), std::io::Error> {
     .get(routes::repo_file_raw);
 
   // static files
-  app.at("*").all(routes::static_resource);
+  app.at("/static/*path").all(routes::static_resource);
 
   app.listen(format!("0.0.0.0:{}", CONFIG.port)).await?;
 

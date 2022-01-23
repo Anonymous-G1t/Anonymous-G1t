@@ -1,11 +1,11 @@
 @font-face {
   font-family: "Fira Code";
-  src: url("/FiraCode.ttf") format("truetype")
+  src: url("/static/FiraCode.ttf") format("truetype")
 }
 
 @font-face {
   font-family: Hasklig,
-  src: url("/Hasklig.ttf") format("truetype")
+  src: url("/static/Hasklig.ttf") format("truetype")
 }
 
 body {

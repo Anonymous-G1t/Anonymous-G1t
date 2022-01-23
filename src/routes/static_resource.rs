@@ -4,30 +4,13 @@ use crate::route_prelude::*;
 pub(crate) async fn static_resource(req: Request<()>) -> tide::Result {
   use http::conditional::{IfModifiedSince, LastModified};
 
-  let file_mime_option = STATIC_DIR.get_file(&req.url().path()[1..]).map(|file| {
+  let file_mime_option = STATIC_DIR.get_file(&req.param("path")?).map(|file| {
     (
       file,
       http::Mime::from_extension(file.path().extension().unwrap().to_string_lossy())
         .unwrap_or(http::mime::PLAIN),
     )
   });
-
-  // only use a File handle here because we might not need to load the file
-  // let file_mime_option = match req.url().path() {
-  //   "/style.css" => Some((
-  //     File::open("templates/static/style.css").unwrap(),
-  //     http::mime::CSS
-  //   )),
-  //   "/robots.txt" => Some((
-  //     File::open("templates/static/robots.txt").unwrap(),
-  //     http::mime::PLAIN
-  //   )),
-  //   "/Feed-icon.svg" => Some((
-  //     File::open("templates/static/Feed-icon.svg").unwrap(),
-  //     http::mime::SVG
-  //   )),
-  //   _ => None
-  // };
 
   match file_mime_option {
     Some((file, mime)) => {

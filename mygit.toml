@@ -1,5 +1,5 @@
 # the port the server will listen on
-port = 8081
+port = 8080
 # Directory to find git repos
 repos_root = "repos"
 # Specify an emoji to be used as a favicon
