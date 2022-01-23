@@ -4,7 +4,7 @@ use crate::route_prelude::*;
 #[template(path = "tag.html")]
 struct RepoTagTemplate<'a> {
   repo: &'a Repository,
-  tag: Tag<'a>
+  tag: Tag<'a>,
 }
 
 pub(crate) async fn repo_tag(req: Request<()>) -> tide::Result {
@@ -21,7 +21,7 @@ pub(crate) async fn repo_tag(req: Request<()>) -> tide::Result {
         req.param("repo_name")?,
         req.param("tag")?
       ))
-      .into()
+      .into(),
     )
   }
 }

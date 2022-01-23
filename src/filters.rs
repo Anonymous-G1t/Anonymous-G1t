@@ -50,15 +50,10 @@ pub(crate) fn description(repo: &Repository) -> askama::Result<String> {
 }
 
 pub(crate) fn last_modified(repo: &Repository) -> askama::Result<git2::Time> {
-  Ok(
-    repo
-      .head()
-      .unwrap()
-      .peel_to_commit()
-      .unwrap()
-      .committer()
-      .when(),
-  )
+  Ok(match repo.head() {
+    Ok(head) => head.peel_to_commit().unwrap().committer().when(),
+    Err(_) => Time::new(0, 0),
+  })
 }
 
 pub(crate) fn repo_owner(repo: &Repository) -> askama::Result<String> {
