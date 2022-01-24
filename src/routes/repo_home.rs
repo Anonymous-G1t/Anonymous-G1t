@@ -1,5 +1,7 @@
 use crate::route_prelude::*;
 
+static CODE_REGEX: Lazy<Regex> = Lazy::new(|| Regex::new("").unwrap());
+
 #[derive(Template)]
 #[template(path = "repo.html")] // using the template in this path, relative
 struct RepoHomeTemplate<'a> {

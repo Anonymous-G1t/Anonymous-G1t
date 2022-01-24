@@ -6,7 +6,7 @@ use serde::Deserialize;
 use std::fs;
 use std::path::Path;
 use std::str;
-use syntect::parsing::{SyntaxDefinition, SyntaxSet, SyntaxSetBuilder};
+use syntect::parsing::SyntaxSet;
 
 use tide::Request;
 
@@ -320,6 +320,8 @@ pub(crate) mod route_prelude {
   pub(crate) use crate::{filters, repo_from_request, StaticDir, CONFIG, SYNTAXES};
   pub(crate) use askama::Template;
   pub(crate) use git2::{Commit, Diff, DiffOptions, Reference, Repository, Signature, Tag};
+  pub(crate) use once_cell::sync::Lazy;
+  pub(crate) use regex::Regex;
   pub(crate) use std::{fs, path::Path, str};
   pub(crate) use syntect::{
     html::{ClassStyle, ClassedHTMLGenerator},

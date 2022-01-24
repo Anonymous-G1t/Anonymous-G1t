@@ -44,3 +44,4 @@ tide = { version = "0.16", default-features = false, features = [
 toml = "0.5.8"
 rust-embed = { version = "6.3", features = ["interpolate-folder-path"] }
 femme = { git = "https://github.com/TheBotlyNoob/femme" }
+regex = "1.5"
