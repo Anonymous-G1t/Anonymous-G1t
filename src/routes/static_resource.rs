@@ -4,18 +4,24 @@ use crate::route_prelude::*;
 pub(crate) async fn static_resource(req: Request<()>) -> tide::Result {
   use http::conditional::{IfModifiedSince, LastModified};
 
-  let file_mime_option = STATIC_DIR.get_file(&req.param("path")?).map(|file| {
+  let file_mime_option = StaticDir::get(req.param("path")?).map(|file| {
     (
       file,
-      http::Mime::from_extension(file.path().extension().unwrap().to_string_lossy())
-        .unwrap_or(http::mime::PLAIN),
+      http::Mime::from_extension(
+        Path::new(&req.param("path").unwrap())
+          .extension()
+          .unwrap()
+          .to_string_lossy(),
+      )
+      .unwrap_or(http::mime::PLAIN),
     )
   });
 
   match file_mime_option {
     Some((file, mime)) => {
-      let metadata = file.metadata().unwrap();
-      let last_modified = metadata.modified();
+      let metadata = file.metadata;
+      let last_modified = std::time::SystemTime::UNIX_EPOCH
+        + std::time::Duration::from_millis(metadata.last_modified().unwrap());
 
       let header = IfModifiedSince::from_headers(&req)?;
 
@@ -32,7 +38,7 @@ pub(crate) async fn static_resource(req: Request<()>) -> tide::Result {
         // the decimal number of octets that would have been sent in the
         // payload body of a 200 response to the same request.
         // - RFC 7230 § 3.3.2
-        response.insert_header("Content-Length", file.contents().len().to_string());
+        response.insert_header("Content-Length", file.data.len().to_string());
 
         return Ok(response);
       }
@@ -48,11 +54,11 @@ pub(crate) async fn static_resource(req: Request<()>) -> tide::Result {
           // sent in the payload body of a response if the same request
           // had used the GET method.
           // - RFC 7230 § 3.3.2
-          response.insert_header("Content-Length", file.contents().len().to_string());
+          response.insert_header("Content-Length", file.data.len().to_string());
         }
         http::Method::Get => {
           // load the file from disk
-          response.set_body(file.contents());
+          response.set_body(&*file.data);
         }
         _ => return Err(tide::Error::from_str(405, "")),
       }

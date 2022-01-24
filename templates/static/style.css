@@ -4,8 +4,8 @@
 }
 
 @font-face {
-  font-family: Hasklig,
-  src: url("/static/Hasklig.ttf") format("truetype")
+  font-family: "Sauce Code Pro";
+  src: url("/static/SauceCodePro.ttf") format("truetype")
 }
 
 body {
@@ -13,7 +13,7 @@ body {
     padding-left: 4ch;
     padding-right: 4ch;
     margin: auto;
-    font-family: Hasklig, Tahoma, Archivo, Helvetica, Arial, Sans-serif;
+    font-family: "Sauce Code Pro", Tahoma, Archivo, Helvetica, Arial, Sans-serif;
     word-wrap: break-word;
     line-height: 1.5;
 }

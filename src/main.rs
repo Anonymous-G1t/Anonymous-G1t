@@ -6,7 +6,7 @@ use serde::Deserialize;
 use std::fs;
 use std::path::Path;
 use std::str;
-use syntect::parsing::SyntaxSet;
+use syntect::parsing::{SyntaxDefinition, SyntaxSet, SyntaxSetBuilder};
 
 use tide::Request;
 
@@ -67,11 +67,25 @@ OPTIONS:
 ";
 
 pub(crate) static CONFIG: Lazy<Config> = Lazy::new(args);
-// so we only have to load this once to reduce startup time for syntax highlighting
-pub(crate) static SYNTAXES: Lazy<SyntaxSet> = Lazy::new(SyntaxSet::load_defaults_newlines);
 
-static STATIC_DIR: include_dir::Dir<'_> =
-  include_dir::include_dir!("$CARGO_MANIFEST_DIR/templates/static");
+// so we only have to load this once to reduce startup time for syntax highlighting
+pub(crate) static SYNTAXES: Lazy<SyntaxSet> = Lazy::new(|| {
+  let syntaxes = Path::new("syntaxes");
+
+  if syntaxes.exists() {
+    let mut builder = SyntaxSet::load_defaults_newlines().into_builder();
+
+    builder.add_from_folder(syntaxes, true).unwrap();
+
+    builder.build()
+  } else {
+    SyntaxSet::load_defaults_newlines()
+  }
+});
+
+#[derive(rust_embed::RustEmbed)]
+#[folder = "$CARGO_MANIFEST_DIR/templates/static"]
+struct StaticDir;
 
 fn args() -> Config {
   // TODO cli
@@ -86,7 +100,7 @@ fn args() -> Config {
   let config_filename = pargs
     .opt_value_from_str(["-c", "--config"])
     .unwrap()
-    .unwrap_or_else(|| "mygit.toml".to_string());
+    .unwrap_or_else(|| "agit.toml".to_string());
 
   let toml_text = fs::read_to_string(&config_filename).unwrap_or_else(|_| {
     tide::log::warn!(
@@ -287,17 +301,11 @@ async fn main() -> Result<(), std::io::Error> {
     .get(routes::repo_file); // ref is optional
 
   app
-    .at(&format!(
-      "/{}/:repo_name/tree/:ref/item/*object_name",
-      CONFIG.repos_root
-    ))
+    .at("/:repo_name/tree/:ref/item/*object_name")
     .get(routes::repo_file);
 
   app
-    .at(&format!(
-      "/{}/:repo_name/tree/:ref/raw/*object_name",
-      CONFIG.repos_root
-    ))
+    .at("/:repo_name/tree/:ref/raw/*object_name")
     .get(routes::repo_file_raw);
 
   // static files
@@ -309,7 +317,7 @@ async fn main() -> Result<(), std::io::Error> {
 }
 
 pub(crate) mod route_prelude {
-  pub(crate) use crate::{filters, repo_from_request, CONFIG, STATIC_DIR, SYNTAXES};
+  pub(crate) use crate::{filters, repo_from_request, StaticDir, CONFIG, SYNTAXES};
   pub(crate) use askama::Template;
   pub(crate) use git2::{Commit, Diff, DiffOptions, Reference, Repository, Signature, Tag};
   pub(crate) use std::{fs, path::Path, str};

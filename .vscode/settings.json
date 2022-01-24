@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "*.{html,xml}": "django-html"
+    "*.{html,xml}": "django-html",
+    "*.sublime-syntax": "YAML"
   }
 }
