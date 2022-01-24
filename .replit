@@ -1,2 +1,4 @@
-lang = "nix"
-run = "cargo run --bin agit"
+run = ["cargo", "run"]
+
+[nix]
+channel = "stable-21_11"
