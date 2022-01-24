@@ -44,7 +44,7 @@ mod defaults {
   }
 
   pub(crate) fn site_name() -> String {
-    "mygit".into()
+    "agit".into()
   }
 
   pub(crate) fn export_ok() -> String {
@@ -63,7 +63,7 @@ FLAGS:
   -h, --help            Prints this help information and exits.
 OPTIONS:
   -c, --config <FILE>   Use a specific configuration file.
-                        default is ./mygit.toml
+                        default is ./agit.toml
 ";
 
 pub(crate) static CONFIG: Lazy<Config> = Lazy::new(args);

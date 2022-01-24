@@ -23,13 +23,13 @@ Acquire a Linux server that you have ssh access to, and decide on the best
 place to place your repos. You can also do this locally to experiment with it.
 
 To initialize a repo, you'll need to run a few commands. I'm using a
-self-hosted instance of the mygit repo as an example. Find a directory where
+self-hosted instance of the agit repo as an example. Find a directory where
 you want to host your repositories. This is using the default settings found in
-`mygit.toml`
+`agit.toml`
 
 ```
-git init --bare mygit
-cd mygit
+git init --bare agit
+cd agit
 touch git-daemon-export-ok
 # update "dumb http" server on updates
 mv hooks/post-update.sample hooks/post-update
@@ -39,21 +39,21 @@ Update the `description` file with a description of the repository
 
 Make sure the HEAD in your remote repo points to your default branch (e.g. master vs main)
 
-Pushing your changes is not handled via mygit -- this will be done over ssh. For example:
+Pushing your changes is not handled via agit -- this will be done over ssh. For example:
 
 ```
-git remote add origin ssh://git@git.alexwennerberg.com:/www/git/mygit
+git remote add origin ssh://git@git.alexwennerberg.com:/www/git/agit
 git push -u origin main
 ```
 
-Set up a reverse proxy on an http server which forwards port 8081 (or whatever port you configure) to your mygit server.
+Set up a reverse proxy on an http server which forwards port 8081 (or whatever port you configure) to your agit server.
 
 ## Why self-host?
 
 Self-hosting provides self-reliance and independence from large platforms that
 using a git hosting platform does not. There are inconvenciences and
 disadvantages to self-hosting, but I think there are also advantages as well of
-a decentralized, self-hosted network of collaboration. Mygit is designed
+a decentralized, self-hosted network of collaboration. agit is designed
 primraily for hobbyists or open source hosts, so it's easy to setup and
 maintain with little effort, rather than an unnecessarily piece of software
 like GitLab. The tradeoff is that you lose out on a lot of features.
@@ -76,7 +76,7 @@ for exactly this purpose, but it is not ready for the public yet.
 
 ## Contributing
 
-- [ticket tracker](https://todo.sr.ht/~aw/mygit)
+- [ticket tracker](https://todo.sr.ht/~aw/agit)
 - [patches](https://lists.sr.ht/~aw/patches)
 
 This exists on GitHub solely for visibility sake, and probably won't forever,
