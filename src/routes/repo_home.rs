@@ -14,7 +14,7 @@ struct RepoHomeTemplate<'a> {
 }
 
 pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
-  use pulldown_cmark::{escape::escape_html, html::push_html, Options, Parser};
+  use pulldown_cmark::{html::push_html, Options, Parser};
 
   enum ReadmeFormat {
     Plaintext,
@@ -47,26 +47,19 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
       // render the file contents to HTML
       match format {
         // render plaintext as preformatted text
-        ReadmeFormat::Plaintext => {
-          let mut output = "<pre>".to_string();
-          escape_html(&mut output, text).unwrap();
-          output.push_str("</pre>");
-          output
-        }
+        ReadmeFormat::Plaintext => format!("<pre>{}</pre>", text.replace("<", "&lt;")),
+
         // already is HTML
         ReadmeFormat::Html => text.into(),
         // render Markdown to HTML
         ReadmeFormat::Markdown => {
-          let parser = Parser::new_ext(text, Options::all());
-
           let mut output = String::new();
-          push_html(&mut output, parser);
-          output
+          push_html(&mut output, Parser::new_ext(text, Options::all()));
+          output.replace("&quot;", "\"")
         }
       }
     })
-    .unwrap_or_default()
-    .replace("&quot;", "\"");
+    .unwrap_or_default();
 
   // replace code in markdown with syntax higlighted code
   for capture in CODE_REGEX.captures_iter(
