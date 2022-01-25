@@ -1,16 +1,16 @@
 @font-face {
-  font-family: "Fira Code";
-  src: url("/static/FiraCode.ttf") format("truetype");
+  font-family: 'Fira Code';
+  src: url('/static/FiraCode.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "Caskaydia Cove";
-  src: url("/static/CaskaydiaCove.ttf") format("truetype");
+  font-family: 'Caskaydia Cove';
+  src: url('/static/CaskaydiaCove.ttf') format('truetype');
 }
 
 :root {
-  --code-font: "Fira Code";
-  --main-font: "Caskaydia Cove";
+  --code-font: 'Fira Code';
+  --main-font: 'Caskaydia Cove';
 
   --fallback-fonts: Archivo, Helvetica, Arial, Sans-serif;
 }
@@ -78,6 +78,7 @@ footer {
   text-align: center;
   font-style: italic;
   font-size: 0.9rem;
+  position: relative;
 }
 
 a.line {
@@ -161,7 +162,13 @@ a.feed > img {
 
 .source {
   border-color: grey;
-  background-color: ;
+  background-color: #303030;
+  border-radius: 20px;
+  margin: 10px;
+  padding: 3px 12px;
+  position: relative;
+  white-space: pre;
+  display: block;
 }
 
 /* for code highlighting */

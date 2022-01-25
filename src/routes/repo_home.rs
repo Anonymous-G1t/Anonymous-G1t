@@ -57,8 +57,9 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
         ReadmeFormat::Html => text.into(),
         // render Markdown to HTML
         ReadmeFormat::Markdown => {
+          let parser = Parser::new_ext(text, Options::all());
+
           let mut output = String::new();
-          let parser = Parser::new_ext(text, Options::empty());
           push_html(&mut output, parser);
           output
         }
@@ -69,8 +70,7 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
 
   // replace code in markdown with syntax higlighted code
   for capture in CODE_REGEX.captures_iter(
-    // not a redundant clone, clippy
-    #[allow(clippy::redundant_clone)]
+    #[allow(clippy::redundant_clone, reason = "its not a redundant clone")]
     &readme_text.clone(),
   ) {
     let syntax = SYNTAXES
@@ -83,8 +83,13 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
     LinesWithEndings::from(&capture["code"])
       .for_each(|line| highlighter.parse_html_for_line_which_includes_newline(line));
 
-    readme_text = readme_text.replace(&capture[0], &highlighter.finalize());
+    readme_text = readme_text.replace(
+      &format!("<pre>{}</pre>", &capture[0]),
+      &highlighter.finalize(),
+    );
   }
+
+  println!("{}", readme_text);
 
   // get the first few commits for a preview
   let commits = if repo.is_shallow() {

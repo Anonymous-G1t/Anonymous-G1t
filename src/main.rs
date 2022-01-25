@@ -1,4 +1,6 @@
-#![allow(clippy::from_over_into)]
+#![feature(lint_reasons)]
+#![allow(clippy::from_over_into, reason = "askama implements into but not from")]
+
 use askama::Template;
 use git2::{Commit, DiffOptions, Repository, Tree};
 use lazy_static::lazy_static;
