@@ -100,7 +100,7 @@ pub(crate) async fn repo_file(req: Request<()>) -> tide::Result {
           path.display()
         );
 
-        let mut output = String::from("<pre class=\"code\">\n");
+        let mut output = String::from("<pre class=\"source\">\n");
         for (n, line) in highlighter.finalize().lines().enumerate() {
           output.push_str(&format!(
             "<a href='{prefix}#L{0}' id='L{0}' class='line'>{0}</a>{line}\n",

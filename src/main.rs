@@ -1,7 +1,7 @@
 #![allow(clippy::from_over_into)]
 use askama::Template;
 use git2::{Commit, DiffOptions, Repository, Tree};
-use once_cell::sync::Lazy;
+use lazy_static::lazy_static;
 use serde::Deserialize;
 use std::fs;
 use std::path::Path;
@@ -66,22 +66,24 @@ OPTIONS:
                         default is ./agit.toml
 ";
 
-pub(crate) static CONFIG: Lazy<Config> = Lazy::new(args);
+lazy_static! {
+  pub(crate) static ref CONFIG: Config = args();
 
-// so we only have to load this once to reduce startup time for syntax highlighting
-pub(crate) static SYNTAXES: Lazy<SyntaxSet> = Lazy::new(|| {
-  let syntaxes = Path::new("syntaxes");
+  // so we only have to load this once to reduce startup time for syntax highlighting
+  pub(crate) static ref SYNTAXES: SyntaxSet = {
+    let syntaxes = Path::new("syntaxes");
 
-  if syntaxes.exists() {
-    let mut builder = SyntaxSet::load_defaults_newlines().into_builder();
+    if syntaxes.exists() {
+      let mut builder = SyntaxSet::load_defaults_newlines().into_builder();
 
-    builder.add_from_folder(syntaxes, true).unwrap();
+      builder.add_from_folder(syntaxes, true).unwrap();
 
-    builder.build()
-  } else {
-    SyntaxSet::load_defaults_newlines()
-  }
-});
+      builder.build()
+    } else {
+      SyntaxSet::load_defaults_newlines()
+    }
+  };
+}
 
 #[derive(rust_embed::RustEmbed)]
 #[folder = "$CARGO_MANIFEST_DIR/templates/static"]
@@ -320,7 +322,7 @@ pub(crate) mod route_prelude {
   pub(crate) use crate::{filters, repo_from_request, StaticDir, CONFIG, SYNTAXES};
   pub(crate) use askama::Template;
   pub(crate) use git2::{Commit, Diff, DiffOptions, Reference, Repository, Signature, Tag};
-  pub(crate) use once_cell::sync::Lazy;
+  pub(crate) use lazy_static::lazy_static;
   pub(crate) use regex::Regex;
   pub(crate) use std::{fs, path::Path, str};
   pub(crate) use syntect::{

@@ -73,7 +73,7 @@ dependencies = [
  "chrono",
  "femme 2.1.2",
  "git2",
- "once_cell",
+ "lazy_static",
  "percent-encoding",
  "pico-args",
  "pulldown-cmark",
