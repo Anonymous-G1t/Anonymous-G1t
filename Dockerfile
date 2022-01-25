@@ -5,5 +5,4 @@ WORKDIR /src
 
 RUN cargo build --release
 
-ENTRYPOINT [ "/usr/bin/cargo", "run", "--release" ]
-
+ENTRYPOINT [ "cargo", "run", "--release" ]

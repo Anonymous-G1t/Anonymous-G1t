@@ -1,16 +1,16 @@
 @font-face {
-  font-family: 'Fira Code';
-  src: url('/static/FiraCode.ttf') format('truetype');
+  font-family: "Fira Code";
+  src: url("/static/FiraCode.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Caskaydia Cove';
-  src: url('/static/CaskaydiaCove.ttf') format('truetype');
+  font-family: "Caskaydia Cove";
+  src: url("/static/CaskaydiaCove.ttf") format("truetype");
 }
 
 :root {
-  --code-font: 'Fira Code';
-  --main-font: 'Caskaydia Cove';
+  --code-font: "Fira Code";
+  --main-font: "Caskaydia Cove";
 
   --fallback-fonts: Archivo, Helvetica, Arial, Sans-serif;
 }
