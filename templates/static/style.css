@@ -26,10 +26,12 @@ body {
 }
 
 html,
-body,
-main {
+body {
   width: 100%;
   height: 100%;
+
+  margin: 0;
+  padding: 0;
 }
 
 hr {
@@ -162,13 +164,19 @@ a.feed > img {
 
 .source {
   border-color: grey;
-  background-color: #303030;
+  background-color: #181818;
   border-radius: 20px;
   margin: 10px;
   padding: 3px 12px;
   position: relative;
   white-space: pre;
   display: block;
+}
+
+.source > .clipboard {
+  position: absolute;
+  top: 3px;
+  right: 3px;
 }
 
 /* for code highlighting */
