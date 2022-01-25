@@ -20,7 +20,7 @@ pub(crate) async fn repo_log_feed(req: Request<()>) -> tide::Result {
   }
 
   let commits = if repo.is_shallow() {
-    tide::log::warn!("Repository {:?} is only a shallow clone", repo.path());
+    tide::log::warn!("repository {:?} is only a shallow clone", repo.path());
     vec![repo.head()?.peel_to_commit().unwrap()]
   } else {
     let mut revwalk = repo.revwalk()?;

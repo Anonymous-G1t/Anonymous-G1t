@@ -46,7 +46,7 @@ pub(crate) async fn index(req: Request<()>) -> tide::Result {
         })
         .collect::<Vec<_>>()
     })
-    .map_err(|e| tide::log::warn!("Can't read repositories: {}", e))
+    .map_err(|e| tide::log::warn!("can't read repositories: {}", e))
     .unwrap_or_default();
   let index_template = IndexTemplate { repos };
 

@@ -108,7 +108,7 @@ fn args() -> Config {
 
   let toml_text = fs::read_to_string(&config_filename).unwrap_or_else(|_| {
     tide::log::warn!(
-      "Configuration file {:?} not found, using defaults",
+      "configuration file {:?} not found, using defaults",
       config_filename
     );
     String::new()
@@ -116,7 +116,7 @@ fn args() -> Config {
   match toml::from_str(&toml_text) {
     Ok(config) => config,
     Err(e) => {
-      eprintln!("could not parse configuration file: {}", e);
+      tide::log::error!("could not parse configuration file: {}", e);
       std::process::exit(1);
     }
   }
@@ -136,7 +136,7 @@ pub(crate) fn repo_from_request(repo_name: &str) -> Result<Repository, tide::Err
     // outside users should not be able to tell the difference between
     // nonexistent and existing but forbidden repos, so not using 403
     .filter(|repo| repo.path().join(&CONFIG.export_ok).exists())
-    .ok_or_else(|| tide::Error::from_str(404, "This repository does not exist."))
+    .ok_or_else(|| tide::Error::from_str(404, "this repository does not exist."))
 }
 
 fn last_commit_for<'a, S: git2::IntoCString>(
@@ -210,10 +210,10 @@ async fn git_data(req: Request<()>) -> tide::Result {
 
   if !path.starts_with(repo.path()) {
     // that path got us outside of the repository structure somehow
-    tide::log::warn!("Attempt to acces file outside of repo dir: {:?}", path);
+    tide::log::warn!("attempt to acces file outside of repo dir: {:?}", path);
     Err(tide::Error::from_str(
       403,
-      "You do not have access to this file.",
+      "you do not have access to this file.",
     ))
   } else if !path.is_file() {
     // Either the requested resource does not exist or it is not
@@ -231,11 +231,13 @@ async fn git_data(req: Request<()>) -> tide::Result {
 
 #[async_std::main]
 async fn main() -> Result<(), std::io::Error> {
-  fs::create_dir_all(CONFIG.repos_root.clone()).ok();
-
   femme::start(femme::Logger::Pretty);
 
-  tide::log::info!("Please report bugs at https://github.com/TheBotlyNoob/agit\n");
+  if let Err(error) = fs::create_dir_all(CONFIG.repos_root.clone()) {
+    tide::log::error!("error creating repositories root: {}", error);
+  }
+
+  tide::log::info!("elease report bugs at https://github.com/TheBotlyNoob/agit\n");
 
   let mut app = tide::new();
 
