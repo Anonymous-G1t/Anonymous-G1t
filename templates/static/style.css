@@ -1,64 +1,61 @@
 @font-face {
-  font-family: "Fira Code";
-  src: url("/static/FiraCode.ttf") format("truetype");
+    font-family: "Fira Code";
+    src: url("/static/FiraCode.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Caskaydia Cove";
-  src: url("/static/CaskaydiaCove.ttf") format("truetype");
+    font-family: "Caskaydia Cove";
+    src: url("/static/CaskaydiaCove.ttf") format("truetype");
 }
 
 :root {
-  --code-font: "Fira Code";
-  --main-font: "Caskaydia Cove";
+    --code-font: "Fira Code";
+    --main-font: "Caskaydia Cove";
 
-  --fallback-fonts: Archivo, Helvetica, Arial, Sans-serif;
+    --fallback-fonts: Archivo, Helvetica, Arial, Sans-serif;
 }
 
 body {
-  padding: 2ch;
-  padding-left: 4ch;
-  padding-right: 4ch;
-  margin: auto;
-  font-family: var(--main-font), var(--fallback-fonts);
-  word-wrap: break-word;
-  line-height: 1.5;
+    font-family: var(--main-font), var(--fallback-fonts);
+    word-wrap: break-word;
+    line-height: 1.5;
+    color: white;
+    background-color: black;
+    padding: 0 1em;
 }
 
 html,
 body {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 hr {
-  margin-left: -1ch;
-  margin-right: -1ch;
-  border: 0;
-  height: 0;
-  border-top: 1px solid;
+    border: 0;
+    height: 0;
+    border-top: 1px solid;
 }
 
 table {
-  border-spacing: 0.5em 0.1em;
+    border-spacing: 0.5em 0.1em;
 }
 
 .clone-url {
-  font-size: 0.9em;
-  float: right;
+    font-size: 0.9em;
+    float: right;
 }
 
 .readme {
-  max-width: 80ch;
+    max-width: 80ch;
 }
 
 .repo-last-updated {
-  font-style: italic;
-  /* so digits of the dates are aligned */
-  font-variant-numeric: tabular-nums;
+    font-style: italic;
+    /* so digits of the dates are aligned */
+    font-variant-numeric: tabular-nums;
 }
 
 .repo-link,
@@ -69,602 +66,112 @@ table {
 .filesize,
 .commit-message,
 .source {
-  font-family: var(--code-font), var(--fallback-fonts);
+    font-family: var(--code-font), var(--fallback-fonts);
 }
 
 .filesize {
-  text-align: right;
+    text-align: right;
 }
 
 footer {
-  text-align: center;
-  font-style: italic;
-  font-size: 0.9rem;
-  position: relative;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9rem;
+    position: relative;
 }
 
 a.line {
-  display: inline-block;
-  width: 4em;
-  margin-right: 0.7em;
-  text-align: right;
-  text-decoration: none;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently */
+    display: inline-block;
+    width: 4em;
+    margin-right: 0.7em;
+    text-align: right;
+    text-decoration: none;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently */
 }
 
 .clone-url {
-  -webkit-user-select: all; /* Safari */
-  user-select: all; /* Standard syntax */
+    -webkit-user-select: all; /* Safari */
+    user-select: all; /* Standard syntax */
 }
 
 h1,
 h2,
 h3 {
-  margin: 0;
+    margin: 0;
 }
 
 h3 {
-  display: inline-block;
-  margin-right: 2em;
+    display: inline-block;
+    margin-right: 2em;
 }
 
 pre {
-  line-height: 1.2;
-  font-size: 1rem;
-  overflow: auto;
-  margin: 0;
-  padding: 0;
+    line-height: 1.2;
+    font-size: 1rem;
+    overflow: auto;
+    margin: 0;
+    padding: 0;
 }
 
 td {
-  white-space: nowrap;
-  margin: 0;
-  border-style: hidden;
-  padding: 0;
+    white-space: nowrap;
+    margin: 0;
+    border-style: hidden;
+    padding: 0;
 }
 
 table td {
-  padding: 0 0.1em;
+    padding: 0 0.1em;
 }
 
 table.core {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .badge {
-  padding: 0.2em;
+    padding: 0.2em;
 }
 
 .commit-summary {
-  width: 100%;
+    width: 100%;
 }
 
 a.feed > img {
-  height: 1em;
+    height: 1em;
 }
 
 @media only screen and (max-width: 600px) {
-  body {
-    font-size: 16px;
-  }
+    body {
+        font-size: 16px;
+    }
 
-  .repo-description,
-  .repo-last-updated,
-  .commit-author-email,
-  .commit-date {
-    display: none;
-  }
+    .repo-description,
+    .repo-last-updated,
+    .commit-author-email,
+    .commit-date {
+        display: none;
+    }
 }
 
 .source {
-  border-color: grey;
-  background-color: #181818;
-  border-radius: 20px;
-  margin: 10px;
-  padding: 3px 12px;
-  position: relative;
-  white-space: pre;
-  display: block;
+    border-color: grey;
+    background-color: #181818;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 3px 12px;
+    position: relative;
+    white-space: pre;
+    display: block;
 }
 
 .source > .clipboard {
-  position: absolute;
-  top: 3px;
-  right: 3px;
-}
-
-/* for code highlighting */
-
-.markup.italic {
-  font-style: italic;
-}
-
-.markup.bold {
-  font-weight: bold;
-}
-
-/*
-color scheme: SolAArized
-https://github.com/paulcpederson/solAArized
-most of these classes are used by syntect
-
-Light is the default color scheme, not using a media query for browser support.
-*/
-/* TODO simplify, e.g. merge CSS classes. */
-
-.storage.modifier,
-.meta.scope.for-in-loop.shell,
-.variable.other.loop.shell,
-.meta.scope.case-block.shell,
-.meta.scope.case-body.shell {
-  color: #445050; /* SolAArized emphasis-light */
-}
-
-body {
-  color: black;
-}
-
-.keyword.operator.comparison,
-.keyword.operator.assignment,
-.keyword.operator.arithmetic,
-.meta.brace.round,
-.meta.brace.curly,
-.punctuation.section,
-.punctuation.section.block,
-.punctuation.definition.parameters,
-.punctuation.section.group,
-.meta.selector.css,
-.text.html.basic,
-.meta.tag.other.html,
-.text.html.basic,
-.meta.tag.any.html,
-.text.html.basic,
-.meta.tag.block.any,
-.text.html.basic,
-.meta.tag.inline.any,
-.text.html.basic,
-.meta.tag.structure.any.html,
-.text.html.basic,
-.source.js.embedded.html,
-.punctuation.separator.key-value.html,
-.variable.other.readwrite.js,
-.variable.other.object.js,
-.variable.other.constant.js,
-.punctuation.definition.string {
-  color: #4f5f5f; /* SolAArized main-light */
-}
-
-hr {
-  border-top-color: #4f5f5f; /* SolAArized main-light */
-}
-
-.comment,
-.meta.documentation,
-.punctuation.definition.tag.html,
-.punctuation.definition.tag.begin,
-.punctuation.definition.tag.end,
-.meta.diff,
-.meta.diff.header,
-.constant.numeric.line-number.find-in-files {
-  color: #5d7178; /* SolAArized comment-light */
-}
-
-:target,
-tr:hover,
-.navbar,
-.meta.paragraph.markdown,
-.meta.dummy.line-break,
-#diff {
-  background-color: white; /* SolAArized background-highlight-light */
-}
-
-body,
-.code {
-  background-color: white; /* SolAArized background-light */
-}
-
-.variable.function,
-.keyword.control.class,
-.entity.name,
-.entity.name.class,
-.entity.name.type.class,
-.entity.other.attribute-name,
-.entity.name.function,
-.constant,
-.constant.language,
-.meta.preprocessor,
-.support.constant.color,
-.invalid.deprecated.color.w3c-non-standard-color-name.scss,
-.entity.name.tag.css,
-.entity.name.tag.scss,
-.source.less,
-.keyword.control.html.elements,
-.source.sass,
-.keyword.control.untitled,
-.entity.other.attribute-name.class,
-.entity.other.attribute-name.id,
-.text.html.basic,
-.entity.other.attribute-name.html,
-.meta.tag.xml,
-.entity.other.attribute-name,
-.variable.other.constant.ruby,
-.meta.array,
-.support.function.construct.php,
-.meta.group.braces.tex,
-.string.other.math.tex,
-.string.other.math.tex,
-.support.type.exception.python,
-.markup.heading,
-.punctuation.definition.heading.markdown,
-.markup.changed.git_gutter {
-  color: #8e6c06; /* SolAArized yellow-light */
-}
-
-.meta.import,
-.keyword,
-.keyword.control.import,
-.keyword.control.import.from,
-.keyword.other.import,
-.keyword.control.at-rule.include,
-.keyword.control.at-rule.import,
-.entity.name.section,
-.constant.character,
-.constant.other,
-.support.type.exception,
-.keyword.other.special-method,
-.keyword.other.special-method.ruby,
-.entity.name.function.preprocessor.c,
-.meta.preprocessor.c.include,
-.meta.preprocessor.macro.c,
-.variable.parameter.function.latex,
-.support.function.section.latex {
-  color: #c64710; /* SolAArized orange-light */
-}
-
-.constant.character.escape,
-.support.function.construct,
-.keyword.other.new,
-.punctuation.separator.continuation,
-.other.package.exclude,
-.other.remove,
-.punctuation.section.group.tex,
-.punctuation.definition.arguments.begin.latex,
-.punctuation.definition.arguments.end.latex,
-.punctuation.definition.arguments.latex,
-.punctuation.definition.constant.math.tex,
-.punctuation.definition.string.begin.tex,
-.punctuation.definition.string.end.tex,
-.variable.parameter.definition.label.latex,
-.punctuation.definition.logical-expression.shell,
-.markup.deleted,
-.markup.deleted.git_gutter,
-.meta.diff.header.from-file,
-.invalid {
-  color: #da2825; /* SolAArized red-light */
-}
-
-.variable.language {
-  color: #c9367d; /* SolAArized magenta-light */
-}
-
-.constant.numeric,
-.constant.other.reference.link.markdown {
-  color: #6266cb; /* SolAArized violet-light */
-}
-
-a,
-.variable,
-.entity.other.inherited-class,
-.entity.name.tag,
-.storage.type,
-.meta.brace.square,
-.punctuation.section.brackets,
-.entity.other.attribute-name.pseudo-element,
-.entity.other.attribute-name.tag.pseudo-element,
-.entity.other.attribute-name.pseudo-class,
-.entity.other.attribute-name.tag.pseudo-class,
-.support.function.perl,
-.meta.diff.range {
-  color: #2976ae; /* SolAArized blue-light */
-}
-
-.string,
-.string.regexp,
-.string.quoted.double,
-.string.quoted.single,
-.constant.other.symbol.ruby,
-.meta.preprocessor.c.include,
-.string.quoted.other.lt-gt.include.c,
-.meta.preprocessor.c.include,
-.punctuation.definition.string.begin,
-.meta.preprocessor.c.include,
-.punctuation.definition.string.end,
-.other.add,
-.text.tex.latex,
-.constant.other.math.tex,
-.constant.other.general.math.tex,
-.constant.other.general.math.tex,
-.constant.character.math.tex,
-.keyword.control.label.latex,
-.text.tex.latex,
-.constant.other.general.math.tex,
-.support.function.general.tex,
-.keyword.control.ref.latex,
-.markup.changed,
-.markup.underline.link.markdown,
-.meta.link.reference,
-.constant.other.reference.link.markdown,
-.entity.name.filename.find-in-files {
-  color: #207e77; /* SolAArized cyan-light */
-}
-
-.keyword,
-.storage,
-.support,
-.support.type,
-.support.class,
-.punctuation.definition.variable,
-.support.function,
-.keyword.other.special-method.ruby,
-.support.function.be.latex,
-.storage.type.class.python,
-.storage.type.function.python,
-.storage.modifier.global.python,
-.storage.modifier.cpp,
-.markup.inserted,
-.markup.quote,
-.markup.inserted.git_gutter,
-.meta.diff.header.to-file {
-  color: #697807; /* SolAArized green-light */
-}
-
-.badge {
-  color: #fdf6e3; /* SolAArized background-light */
-  background-color: #697807; /* SolAArized green-light */
-}
-
-.badge.tag {
-  background-color: #c64710; /* SolAArized orange-light */
-}
-
-/* Dark colour scheme for browsers that support it. */
-
-@media (prefers-color-scheme: dark) {
-  .storage.modifier,
-  .meta.scope.for-in-loop.shell,
-  .variable.other.loop.shell,
-  .meta.scope.case-block.shell,
-  .meta.scope.case-body.shell {
-    color: #a1acaf; /* SolAArized emphasis-dark */
-  }
-
-  body,
-  .code,
-  .keyword.operator.comparison,
-  .keyword.operator.assignment,
-  .keyword.operator.arithmetic,
-  .meta.brace.round,
-  .meta.brace.curly,
-  .punctuation.section,
-  .punctuation.section.block,
-  .punctuation.definition.parameters,
-  .punctuation.section.group,
-  .meta.selector.css,
-  .text.html.basic,
-  .meta.tag.other.html,
-  .text.html.basic,
-  .meta.tag.any.html,
-  .text.html.basic,
-  .meta.tag.block.any,
-  .text.html.basic,
-  .meta.tag.inline.any,
-  .text.html.basic,
-  .meta.tag.structure.any.html,
-  .text.html.basic,
-  .source.js.embedded.html,
-  .punctuation.separator.key-value.html,
-  .variable.other.readwrite.js,
-  .variable.other.object.js,
-  .variable.other.constant.js,
-  .punctuation.definition.string {
-    color: #919ea1; /* SolAArized main-dark */
-  }
-
-  hr {
-    border-top-color: #919ea1; /* SolAArized main-dark */
-  }
-
-  .comment,
-  .meta.documentation,
-  .punctuation.definition.tag.html,
-  .punctuation.definition.tag.begin,
-  .punctuation.definition.tag.end,
-  .meta.diff,
-  .meta.diff.header,
-  .constant.numeric.line-number.find-in-files {
-    color: #5d7178; /* SolAArized comment-dark */
-  }
-
-  :target,
-  tr:hover,
-  .navbar,
-  .meta.paragraph.markdown,
-  .meta.dummy.line-break,
-  #diff {
-    background-color: black; /* SolAArized background-highdark-dark */
-  }
-
-  body {
-    background-color: black; /* SolAArized background-dark */
-  }
-
-  .variable.function,
-  .keyword.control.class,
-  .entity.name,
-  .entity.name.class,
-  .entity.name.type.class,
-  .entity.other.attribute-name,
-  .entity.name.function,
-  .constant,
-  .constant.language,
-  .meta.preprocessor,
-  .support.constant.color,
-  .invalid.deprecated.color.w3c-non-standard-color-name.scss,
-  .entity.name.tag.css,
-  .entity.name.tag.scss,
-  .source.less,
-  .keyword.control.html.elements,
-  .source.sass,
-  .keyword.control.untitled,
-  .entity.other.attribute-name.class,
-  .entity.other.attribute-name.id,
-  .text.html.basic,
-  .entity.other.attribute-name.html,
-  .meta.tag.xml,
-  .entity.other.attribute-name,
-  .variable.other.constant.ruby,
-  .meta.array,
-  .support.function.construct.php,
-  .meta.group.braces.tex,
-  .string.other.math.tex,
-  .string.other.math.tex,
-  .support.type.exception.python,
-  .markup.heading,
-  .punctuation.definition.heading.markdown,
-  .markup.changed.git_gutter {
-    color: #b58900; /* SolAArized yellow-dark */
-  }
-
-  .meta.import,
-  .keyword,
-  .keyword.control.import,
-  .keyword.control.import.from,
-  .keyword.other.import,
-  .keyword.control.at-rule.include,
-  .keyword.control.at-rule.import,
-  .entity.name.section,
-  .constant.character,
-  .constant.other,
-  .support.type.exception,
-  .keyword.other.special-method,
-  .keyword.other.special-method.ruby,
-  .entity.name.function.preprocessor.c,
-  .meta.preprocessor.c.include,
-  .meta.preprocessor.macro.c,
-  .variable.parameter.function.latex,
-  .support.function.section.latex {
-    color: #cb4b16; /* SolAArized orange-dark */
-  }
-
-  .constant.character.escape,
-  .support.function.construct,
-  .keyword.other.new,
-  .punctuation.separator.continuation,
-  .other.package.exclude,
-  .other.remove,
-  .punctuation.section.group.tex,
-  .punctuation.definition.arguments.begin.latex,
-  .punctuation.definition.arguments.end.latex,
-  .punctuation.definition.arguments.latex,
-  .punctuation.definition.constant.math.tex,
-  .punctuation.definition.string.begin.tex,
-  .punctuation.definition.string.end.tex,
-  .variable.parameter.definition.label.latex,
-  .punctuation.definition.logical-expression.shell,
-  .markup.deleted,
-  .markup.deleted.git_gutter,
-  .meta.diff.header.from-file,
-  .invalid {
-    color: #dc322f; /* SolAArized red-dark */
-  }
-
-  .variable.language {
-    color: #d33682; /* SolAArized magenta-dark */
-  }
-
-  .constant.numeric,
-  .constant.other.reference.link.markdown {
-    color: #6c71c4; /* SolAArized violet-dark */
-  }
-
-  a,
-  .variable,
-  .entity.other.inherited-class,
-  .entity.name.tag,
-  .storage.type,
-  .meta.brace.square,
-  .punctuation.section.brackets,
-  .entity.other.attribute-name.pseudo-element,
-  .entity.other.attribute-name.tag.pseudo-element,
-  .entity.other.attribute-name.pseudo-class,
-  .entity.other.attribute-name.tag.pseudo-class,
-  .support.function.perl,
-  .meta.diff.range {
-    color: #268bd2; /* SolAArized blue-dark */
-  }
-
-  .string,
-  .string.regexp,
-  .string.quoted.double,
-  .string.quoted.single,
-  .constant.other.symbol.ruby,
-  .meta.preprocessor.c.include,
-  .string.quoted.other.lt-gt.include.c,
-  .meta.preprocessor.c.include,
-  .punctuation.definition.string.begin,
-  .meta.preprocessor.c.include,
-  .punctuation.definition.string.end,
-  .other.add,
-  .text.tex.latex,
-  .constant.other.math.tex,
-  .constant.other.general.math.tex,
-  .constant.other.general.math.tex,
-  .constant.character.math.tex,
-  .keyword.control.label.latex,
-  .text.tex.latex,
-  .constant.other.general.math.tex,
-  .support.function.general.tex,
-  .keyword.control.ref.latex,
-  .markup.changed,
-  .markup.underline.link.markdown,
-  .meta.link.reference,
-  .constant.other.reference.link.markdown,
-  .entity.name.filename.find-in-files {
-    color: #2aa198; /* SolAArized cyan-dark */
-  }
-
-  .keyword,
-  .storage,
-  .support,
-  .support.type,
-  .support.class,
-  .punctuation.definition.variable,
-  .support.function,
-  .keyword.other.special-method.ruby,
-  .support.function.be.latex,
-  .storage.type.class.python,
-  .storage.type.function.python,
-  .storage.modifier.global.python,
-  .storage.modifier.cpp,
-  .markup.inserted,
-  .markup.quote,
-  .markup.inserted.git_gutter,
-  .meta.diff.header.to-file {
-    color: #859900; /* SolAArized green-dark */
-  }
-
-  .badge {
-    color: #002b36; /* SolAArized background-dark */
-    background-color: #859900; /* SolAArized green-dark */
-  }
-
-  .badge.tag {
-    background-color: #b58900; /* SolAArized orange-dark */
-  }
+    position: absolute;
+    top: 3px;
+    right: 3px;
 }

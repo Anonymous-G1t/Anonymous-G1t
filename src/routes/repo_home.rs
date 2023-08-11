@@ -25,7 +25,7 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
   let repo = repo_from_request(req.param("repo_name")?)?;
 
   let mut format = ReadmeFormat::Plaintext;
-  let mut readme_text = repo
+  let readme_text = repo
     .revparse_single("HEAD:README")
     .or_else(|_| repo.revparse_single("HEAD:README.txt"))
     .or_else(|_| {
@@ -61,11 +61,10 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
     })
     .unwrap_or_default();
 
+  let mut highlighted = String::with_capacity(readme_text.len());
+
   // replace code in markdown with syntax higlighted code
-  for capture in CODE_REGEX.captures_iter(
-    #[allow(clippy::redundant_clone, reason = "its not a redundant clone")]
-    &readme_text.clone(),
-  ) {
+  for capture in CODE_REGEX.captures_iter(&readme_text) {
     let syntax = SYNTAXES
       .find_syntax_by_token(&capture["language"])
       .unwrap_or_else(|| SYNTAXES.find_syntax_plain_text());
@@ -77,13 +76,11 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
       let _ = highlighter.parse_html_for_line_which_includes_newline(line);
     });
 
-    readme_text = readme_text.replace(
+    highlighted = readme_text.replace(
       &format!("<pre>{}</pre>", &capture[0]),
       &highlighter.finalize(),
     );
   }
-
-  println!("{}", readme_text);
 
   // get the first few commits for a preview
   let commits = if repo.is_shallow() {
@@ -105,7 +102,7 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
     RepoHomeTemplate {
       repo: &repo,
       commits,
-      readme_text,
+      readme_text: highlighted,
     }
     .into(),
   )
