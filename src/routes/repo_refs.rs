@@ -14,24 +14,24 @@ pub(crate) async fn repo_refs(req: Request<()>) -> tide::Result {
     // redirect to start page of repo
     let mut url = req.url().clone();
     url.path_segments_mut().unwrap().pop();
-    return Ok(tide::Redirect::temporary(url.to_string()).into());
+    return Ok(tide::Redirect::temporary(url).into());
   }
 
   let branches = repo
     .references()?
-    .filter_map(|x| x.ok())
-    .filter(|x| x.is_branch())
+    .filter_map(Result::ok)
+    .filter(Reference::is_branch)
     .collect();
   let mut tags = Vec::new();
   repo
     .tag_foreach(|oid, name_bytes| {
       // remove prefix "ref/tags/"
-      let name = String::from_utf8(name_bytes[10..].to_vec()).unwrap();
+      let name = String::from_utf8_lossy(&name_bytes[10..]).to_string();
 
       let obj = repo.find_object(oid, None).unwrap();
       tags.push(match obj.kind().unwrap() {
         git2::ObjectType::Tag => (
-          format!("refs/{}", name),
+          format!("refs/{name}"),
           name,
           obj
             .as_tag()
@@ -43,7 +43,7 @@ pub(crate) async fn repo_refs(req: Request<()>) -> tide::Result {
         git2::ObjectType::Commit => {
           // lightweight tag
           (
-            format!("commit/{}", name),
+            format!("commit/{name}"),
             name,
             obj.as_commit().unwrap().committer().to_owned(),
           )

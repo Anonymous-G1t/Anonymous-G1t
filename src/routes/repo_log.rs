@@ -16,7 +16,7 @@ pub(crate) async fn repo_log(req: Request<()>) -> tide::Result {
     // redirect to start page of repo
     let mut url = req.url().clone();
     url.path_segments_mut().unwrap().pop();
-    return Ok(tide::Redirect::temporary(url.to_string()).into());
+    return Ok(tide::Redirect::temporary(url).into());
   }
 
   let next_page_spec;

@@ -17,7 +17,7 @@ pub(crate) async fn repo_file(req: Request<()>) -> tide::Result {
     // redirect to start page of repo
     let mut url = req.url().clone();
     url.path_segments_mut().unwrap().pop();
-    return Ok(tide::Redirect::temporary(url.to_string()).into());
+    return Ok(tide::Redirect::temporary(url).into());
   }
 
   let head = repo.head()?;
@@ -89,8 +89,9 @@ pub(crate) async fn repo_file(req: Request<()>) -> tide::Result {
         // create a highlighter that uses CSS classes so we can use prefers-color-scheme
         let mut highlighter =
           ClassedHTMLGenerator::new_with_class_style(syntax, &SYNTAXES, ClassStyle::Spaced);
-        LinesWithEndings::from(file_string)
-          .for_each(|line| highlighter.parse_html_for_line_which_includes_newline(line));
+        LinesWithEndings::from(file_string).for_each(|line| {
+          let _ = highlighter.parse_html_for_line_which_includes_newline(line);
+        });
 
         // use oid so it is a permalink
         let prefix = format!(

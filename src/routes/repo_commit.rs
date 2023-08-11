@@ -43,8 +43,9 @@ impl RepoCommitTemplate<'_> {
       .expect("diff syntax missing");
     let mut highlighter =
       ClassedHTMLGenerator::new_with_class_style(syntax, &SYNTAXES, ClassStyle::Spaced);
-    LinesWithEndings::from(&buf)
-      .for_each(|line| highlighter.parse_html_for_line_which_includes_newline(line));
+    LinesWithEndings::from(&buf).for_each(|line| {
+      let _ = highlighter.parse_html_for_line_which_includes_newline(line);
+    });
     highlighter.finalize()
   }
 

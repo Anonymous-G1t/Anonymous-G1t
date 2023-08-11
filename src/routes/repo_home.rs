@@ -47,7 +47,7 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
       // render the file contents to HTML
       match format {
         // render plaintext as preformatted text
-        ReadmeFormat::Plaintext => format!("<pre>{}</pre>", text.replace("<", "&lt;")),
+        ReadmeFormat::Plaintext => format!("<pre>{}</pre>", text.replace('<', "&lt;")),
 
         // already is HTML
         ReadmeFormat::Html => text.into(),
@@ -73,8 +73,9 @@ pub(crate) async fn repo_home(req: Request<()>) -> tide::Result {
     let mut highlighter =
       ClassedHTMLGenerator::new_with_class_style(syntax, &SYNTAXES, ClassStyle::Spaced);
 
-    LinesWithEndings::from(&capture["code"])
-      .for_each(|line| highlighter.parse_html_for_line_which_includes_newline(line));
+    LinesWithEndings::from(&capture["code"]).for_each(|line| {
+      let _ = highlighter.parse_html_for_line_which_includes_newline(line);
+    });
 
     readme_text = readme_text.replace(
       &format!("<pre>{}</pre>", &capture[0]),

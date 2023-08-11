@@ -97,7 +97,7 @@ fn args() -> Config {
   let mut pargs = pico_args::Arguments::from_env();
 
   if pargs.contains(["-h", "--help"]) {
-    print!("{}", HELP);
+    print!("{HELP}");
     std::process::exit(0);
   }
 
@@ -231,13 +231,10 @@ async fn git_data(req: Request<()>) -> tide::Result {
 
 #[async_std::main]
 async fn main() -> Result<(), std::io::Error> {
-  femme::start(femme::Logger::Pretty);
-
   if let Err(error) = fs::create_dir_all(CONFIG.repos_root.clone()) {
     tide::log::error!("error creating repositories root: {}", error);
+    std::process::exit(1);
   }
-
-  tide::log::info!("elease report bugs at https://github.com/TheBotlyNoob/agit\n");
 
   let mut app = tide::new();
 
@@ -317,6 +314,7 @@ async fn main() -> Result<(), std::io::Error> {
   // static files
   app.at("/static/*path").all(routes::static_resource);
 
+  println!("running on http://localhost:{}", CONFIG.port);
   app.listen(format!("0.0.0.0:{}", CONFIG.port)).await?;
 
   Ok(())
