@@ -7,7 +7,7 @@
 {% block content %}
   {% include "repo-navbar.html" %}
   <h3>{{ branch }}</h3>
-  <a href="log.xml" class="feed"><img src="/Feed-icon.svg" alt="RSS feed icon"/></a>
+  <a href="log.xml" class="feed"><img src="/static/feed-icon.svg" alt="RSS feed icon"/></a>
   {% if next_page.is_some() %}
   <a href="{{ next_page.as_ref().unwrap() }}">older commits &rarr;</a>
   {% endif %}

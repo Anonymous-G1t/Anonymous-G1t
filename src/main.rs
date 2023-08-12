@@ -1,12 +1,8 @@
 #![allow(clippy::from_over_into)] // askama implements into but not from
 
-use askama::Template;
-use git2::{Commit, DiffOptions, Repository, Tree};
-use lazy_static::lazy_static;
+use crate::route_prelude::*;
+use git2::Tree;
 use serde::Deserialize;
-use std::fs;
-use std::path::Path;
-use std::str;
 use syntect::parsing::SyntaxSet;
 
 use tide::Request;
@@ -209,7 +205,7 @@ async fn git_data(req: Request<()>) -> tide::Result {
 
   if !path.starts_with(repo.path()) {
     // that path got us outside of the repository structure somehow
-    tide::log::warn!("attempt to acces file outside of repo dir: {:?}", path);
+    tide::log::warn!("attempt to access file outside of repo dir: {:?}", path);
     Err(tide::Error::from_str(
       403,
       "you do not have access to this file.",
@@ -325,7 +321,7 @@ pub(crate) mod route_prelude {
   pub(crate) use git2::{Commit, Diff, DiffOptions, Reference, Repository, Signature, Tag};
   pub(crate) use lazy_static::lazy_static;
   pub(crate) use regex::Regex;
-  pub(crate) use std::{fs, path::Path, str};
+  pub(crate) use std::{borrow::Borrow, fs, path::Path, str};
   pub(crate) use syntect::{
     html::{ClassStyle, ClassedHTMLGenerator},
     util::LinesWithEndings,

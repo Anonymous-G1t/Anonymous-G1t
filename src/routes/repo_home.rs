@@ -6,7 +6,7 @@ lazy_static! {
 }
 
 #[derive(Template)]
-#[template(path = "repo.html")] // using the template in this path, relative
+#[template(path = "repo.html")] 
 struct RepoHomeTemplate<'a> {
   repo: &'a Repository,
   commits: Vec<Commit<'a>>,

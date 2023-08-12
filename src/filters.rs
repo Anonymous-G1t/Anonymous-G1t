@@ -1,6 +1,6 @@
 use git2::{Commit, Repository, Signature, Time};
 
-pub(crate) fn format_datetime(time: &Time, format: &str) -> askama::Result<String> {
+pub(crate) fn format_datetime(time: Time, format: &str) -> askama::Result<String> {
   use chrono::{FixedOffset, TimeZone};
 
   let offset = FixedOffset::east(time.offset_minutes() * 60);
@@ -8,7 +8,7 @@ pub(crate) fn format_datetime(time: &Time, format: &str) -> askama::Result<Strin
   Ok(datetime.format(format).to_string())
 }
 
-pub(crate) fn unix_perms(m: &i32) -> askama::Result<String> {
+pub(crate) fn unix_perms(m: i32) -> askama::Result<String> {
   // https://unix.stackexchange.com/questions/450480/file-permission-with-six-bytes-in-git-what-does-it-mean
   // Git doesn’t store arbitrary modes, only a subset of the values are
   // allowed. Since the number of possible values is quite small, it is
@@ -66,7 +66,7 @@ pub(crate) fn repo_owner(repo: &Repository) -> askama::Result<String> {
   )
 }
 
-pub(crate) fn signature_email_link(signature: &Signature) -> askama::Result<String> {
+pub(crate) fn signature_email_link(signature: Signature) -> askama::Result<String> {
   Ok(if let Some(email) = signature.email() {
     format!(
       "<a href=\"mailto:{}\">{}</a>",

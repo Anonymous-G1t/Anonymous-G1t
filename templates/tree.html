@@ -25,7 +25,7 @@
       </td>
       <td class="filesize">
         {% if o.as_blob().is_some() %}
-        {{ o.as_blob().unwrap().content().len()|filesizeformat }}
+        {{ o.as_blob().unwrap().content().len().borrow()|filesizeformat }}
         {% endif %}
       </td>
       {% when Err with (_) %}
